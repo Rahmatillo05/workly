@@ -28,7 +28,8 @@ class BaseController extends Controller
                             'delete',
                             'multiple-update',
                             'multiple-update-save',
-                            'set-discount'
+                            'set-discount',
+                            'logout'
                         ],
                         'allow' => true,
                         'roles' => ['@'],

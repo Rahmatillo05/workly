@@ -2,8 +2,8 @@
 
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
-use yii\bootstrap5\ActiveForm;
 use yii\helpers\Url;
+use kartik\form\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var common\models\Product $model */

@@ -26,7 +26,8 @@ class ProductCreateModel extends Model
             [['category_id', 'name', 'description', 'has_came_amount', 'purchase_price', 'sell_price', 'discount'], 'required'],
             [['name', 'description'], 'string'],
             [['purchase_price', 'sell_price', 'discount'], 'number'],
-            [['has_came_amount', 'category_id'], 'integer']
+            [['has_came_amount', 'category_id'], 'integer'],
+            [['sell_price'], 'compare', 'compareAttribute' => 'purchase_price', 'operator' => '>'],
         ];
     }
 

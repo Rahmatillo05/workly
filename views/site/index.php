@@ -2,7 +2,10 @@
 
 use yii\helpers\Url;
 
-/** @var yii\web\View $this */
+/**
+ * @var yii\web\View $this
+ * @var \app\models\Order $order
+ */
 
 $this->title = 'My Yii Application';
 ?>
@@ -126,7 +129,7 @@ $this->title = 'My Yii Application';
                 </div>
             </div>
             <div class="card-body">
-                <? //= $this->render('_order_form', ['model' => $order]) ?>
+                <?= $this->render('_order_form', ['model' => $order]) ?>
             </div>
         </div>
     </div>

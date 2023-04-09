@@ -114,4 +114,8 @@ class Product extends \yii\db\ActiveRecord
     {
         return Category::find()->all();
     }
+    public function getRemainingAmount()
+    {
+        return ProductAmountHistory::find()->where(['product_id' => $this->id])->sum('remaining_amount');
+    }
 }

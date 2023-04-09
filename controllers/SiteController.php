@@ -2,17 +2,18 @@
 
 namespace app\controllers;
 
+use app\models\Order;
+use app\models\ProductPurchaseHistory;
 use Yii;
 use yii\web\Response;
 use app\models\LoginForm;
-use app\controllers\BaseController;
 
 /**
  * Site controller
  */
 class SiteController extends BaseController
 {
-  
+
 
     /**
      * Displays homepage.
@@ -21,12 +22,29 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
-        // $order = new Selling();
-        return $this->render('index');
+        $order = new Order();
+        return $this->render('index', compact('order'));
     }
-    public function actionTest()
+
+    public function actionOrder()
     {
-        return $this->render('test');
+        $model = new Order();
+        if ($this->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $product_id = $this->request->post('product_id');
+            return ProductPurchaseHistory::find()->where(['product_id' => $product_id])->orderBy(['id' => SORT_DESC])->one();
+        }
+        if ($this->request->isPost){
+            if ($model->load($this->request->post())){
+                if ($model->isSave()){
+                    Yii::$app->session->setFlash('success', "Order saved");
+                    $this->redirect(['index']);
+                } else{
+                    Yii::$app->session->setFlash('error', "Order not saved");
+                    $this->redirect(['index']);
+                }
+            }
+        }
     }
 
     /**
@@ -44,7 +62,7 @@ class SiteController extends BaseController
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->goHome();
         }
 
         $model->password = '';

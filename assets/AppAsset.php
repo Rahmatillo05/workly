@@ -30,7 +30,8 @@ class AppAsset extends AssetBundle
         'js/main.js',
         'js/dashboards-analytics.js',
         'js/extended-ui-perfect-scrollbar.js',
-        'js/jquery.nice-select.js'
+        'js/jquery.nice-select.js',
+        'js/app.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'amount',
                             'value' => function (Product $model) {
-                                return round($model->productAmountHistories[0]->remaining_amount, 1);
+                                return round($model->remainingAmount, 1);
                             },
                             'label' => 'Amount'
                         ],

@@ -31,6 +31,7 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['product_id', 'sell_amount', 'sell_price'], 'required'],
             [['product_id', 'sell_amount', 'created_at'], 'default', 'value' => null],
             [['product_id', 'sell_amount', 'created_at'], 'integer'],
             [['sell_price'], 'number'],
@@ -45,7 +46,7 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'product_id' => 'Product ID',
+            'product_id' => 'Product',
             'sell_amount' => 'Sell Amount',
             'sell_price' => 'Sell Price',
             'created_at' => 'Created At',
@@ -65,5 +66,17 @@ class Order extends \yii\db\ActiveRecord
     public function getProductList()
     {
         return Product::find()->orderBy(['id' => SORT_DESC])->all();
+    }
+
+    public function isSave()
+    {
+        $product_amount = ProductAmountHistory::find()->where(['product_id' => $this->product_id])->orderBy(['id' => SORT_DESC])->one();
+        $product_amount->sold_amount = $this->sell_amount;
+        $product_amount->remaining_amount = $product_amount->has_came_amount - $product_amount->sold_amount;
+
+        if ($product_amount->save()) {
+            return $this->save();
+        }
+        return false;
     }
 }

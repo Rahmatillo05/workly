@@ -15,7 +15,7 @@ class BaseController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['login'],
+                        'actions' => ['login', 'error'],
                         'allow' => true,
                     ],
                     [
@@ -30,7 +30,8 @@ class BaseController extends Controller
                             'multiple-update-save',
                             'set-discount',
                             'logout',
-                            'add-amount'
+                            'add-amount',
+                            'order'
                         ],
                         'allow' => true,
                         'roles' => ['@'],

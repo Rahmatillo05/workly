@@ -14,9 +14,9 @@ class m230409_032154_create_product_purchase_history_table extends Migration
     {
         $this->createTable('{{%product_purchase_history}}', [
             'id' => $this->primaryKey(),
-            'purchase_price' => $this->money(250, 2)->notNull(),
-            'sell_price' => $this->money(250, 2)->notNull(),
-            'discount' => $this->float(250, 2)->notNull(),
+            'purchase_price' => $this->money(25, 2)->notNull(),
+            'sell_price' => $this->money(25, 2)->notNull(),
+            'discount' => $this->float(25, 2)->notNull(),
             'product_id' => $this->integer(),
             'created_at' => $this->integer(),
             'updated_at' => $this->integer()

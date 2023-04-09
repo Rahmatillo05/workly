@@ -23,6 +23,10 @@ use yii\behaviors\TimestampBehavior;
 class Product extends \yii\db\ActiveRecord
 {
     /**
+     * @var mixed|null
+     */
+
+    /**
      * {@inheritdoc}
      */
     public static function tableName()
@@ -104,6 +108,10 @@ class Product extends \yii\db\ActiveRecord
      */
     public function getProductPurchaseHistories()
     {
-        return $this->hasMany(ProductPurchaseHistory::class, ['product_id' => 'id']);
+        return ProductPurchaseHistory::find()->where(['product_id' => $this->id])->orderBy(['id' => SORT_DESC])->all();
+    }
+    public function getCategoryList()
+    {
+        return Category::find()->all();
     }
 }

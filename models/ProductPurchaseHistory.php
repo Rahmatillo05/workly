@@ -58,6 +58,7 @@ class ProductPurchaseHistory extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
     public function behaviors()
     {
         return [
@@ -66,6 +67,7 @@ class ProductPurchaseHistory extends \yii\db\ActiveRecord
             ]
         ];
     }
+
     /**
      * Gets query for [[Product]].
      *
@@ -76,9 +78,17 @@ class ProductPurchaseHistory extends \yii\db\ActiveRecord
         return $this->hasOne(Product::class, ['id' => 'product_id']);
     }
 
-    public function isSave($product_id)
+
+    public function multipleUpdated(array $products)
     {
-        $this->product_id = $product_id;
-        return $this->product_id ?? $this->save();
+        $result = false;
+        foreach ($products as $product) {
+            $model = self::findOne($product['id']);
+            $model->purchase_price = $product['purchase_price'];
+            $model->sell_price = $product['sell_price'];
+            $model->discount = $product['discount'];
+            $result = $model->save();
+        }
+        return $result;
     }
 }

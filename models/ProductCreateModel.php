@@ -86,4 +86,22 @@ class ProductCreateModel extends Model
         return $model->save();
     }
 
+    public function getCategoryList()
+    {
+        return Category::find()->all();
+    }
+
+    public function findModel(int $id): ProductCreateModel
+    {
+        $model = new $this;
+        $product = Product::findOne($id);
+        $model->category_id = $product->category_id;
+        $model->name = $product->name;
+        $model->description = $product->description;
+        $model->has_came_amount = $product->productAmountHistories[0]->has_came_amount;
+        $model->discount = $product->productPurchaseHistories[0]->discount;
+        $model->sell_price = $product->productPurchaseHistories[0]->sell_price;
+        $model->purchase_price = $product->productPurchaseHistories[0]->purchase_price;
+        return $model;
+    }
 }

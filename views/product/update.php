@@ -4,10 +4,10 @@ use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var common\models\Product $model */
-
+$id = Yii::$app->request->get('id');
 $this->title = 'Update Product: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="row">

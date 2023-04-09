@@ -12,16 +12,16 @@ class PriceFormatter extends Widget
         parent::init();
     }
 
-    public static function productPriceDifference(Product $product)
+    public static function productPriceDifference(Product $product): string
     {
-        $price = round($product->last_purchase_price, 1);
+        $price = round($product->productPurchaseHistories[0]->purchase_price, 1);
 
         if (!isset($product->productPriceHistories[1])) {
             return "{$price} $";
         }
 
-        $oldPrice = $product->productPriceHistories[1]->purchase_price;
-        $newPrice = $product->productPriceHistories[0]->purchase_price;
+        $oldPrice = $product->productPurchaseHistories[1]->purchase_price;
+        $newPrice = $product->productPurchaseHistories[0]->purchase_price;
         $oldDiff = $newPrice - $oldPrice;
 
         if ($oldPrice > $newPrice) {

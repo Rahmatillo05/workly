@@ -4,8 +4,10 @@ namespace app\controllers;
 
 use app\models\Product;
 use app\models\ProductCreateModel;
+use app\models\ProductPurchaseHistory;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -83,11 +85,11 @@ class ProductController extends BaseController
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->isUpdated()) {
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -114,7 +116,7 @@ class ProductController extends BaseController
     {
         if ($this->request->isPost) {
             if ($product_ids = $this->request->post('selection')) {
-                $products = Product::findAll(['id' => $product_ids]);
+                $products = ProductPurchaseHistory::findAll($product_ids);
                 return $this->render('multiple-update', compact('products'));
             } else {
                 Yii::$app->session->setFlash('error', 'No row selected');
@@ -133,7 +135,8 @@ class ProductController extends BaseController
                     $products[$key] = $value;
                 }
             }
-            if ((new Product())->multipleUpdated($products)) {
+
+            if ((new ProductPurchaseHistory())->multipleUpdated($products)) {
                 Yii::$app->session->setFlash('success', 'Selected rows updated successfully!');
             }
         }

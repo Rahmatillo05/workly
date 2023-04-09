@@ -1,12 +1,12 @@
 <?php
 
-use common\components\widgets\PriceFormatter;
+use app\components\widgets\PriceFormatter;
+use app\models\ProductCreateModel;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\widgets\Pjax;
 use yii\grid\GridView;
 use yii\bootstrap5\Modal;
-use common\models\Product;
+use app\models\Product;
 use yii\grid\ActionColumn;
 use yii\grid\CheckboxColumn;
 use yii\widgets\ActiveForm;
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'title' => '<h2>Create Product</h2>',
                     'toggleButton' => ['label' => 'Create product', 'class' => 'btn btn-success'],
                 ]);
-                echo $this->render('_form', ['model' => new Product()]);
+                echo $this->render('_modal_form', ['model' => new ProductCreateModel()]);
                 Modal::end(); ?>
             </p>
         </div>
@@ -45,7 +45,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     [
                         'class' => CheckboxColumn::class,
-                        'cssClass' => 'form-check-input'
+                        'cssClass' => 'form-check-input',
+                        'checkboxOptions' => function (Product $model, $key, $index, $column) {
+                            return ['value' => $model->productPurchaseHistories[0]->id];
+                        }
                     ],
                     'id',
                     [
@@ -64,15 +67,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'last_sell_price',
                         'value' => function (Product $model) {
-                            return round($model->last_sell_price, 1) . " $";
+                            return round($model->productPurchaseHistories[0]->sell_price, 1) . " $";
                         },
                         'label' => 'Sell price'
                     ],
                     [
                         'attribute' => 'last_discount',
                         'value' => function (Product $model) {
-                            $discount_price = PriceFormatter::calculateDiscountSum($model->last_sell_price, $model->last_discount);
-                            return Html::tag('span', "{$discount_price} $ ({$model->last_discount}%)", ['class' => 'badge bg-label-info']);
+                            $discount_price = PriceFormatter::calculateDiscountSum($model->productPurchaseHistories[0]->sell_price, $model->productPurchaseHistories[0]->discount);
+                            return Html::tag('span', "{$discount_price} $ ({$model->productPurchaseHistories[0]->discount}%)", ['class' => 'badge bg-label-info']);
                         },
                         'label' => 'Discount price',
                         'format' => 'html'
@@ -88,7 +91,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ]); ?>
             <div class="demo-inline-spacing d-flex justify-content-left align-items-center">
                 <i class="">With selected:</i>
-                 <?= Html::submitButton('Change Price and Discount', ['class' => 'btn btn-sm btn-outline-info mt-2']) ?></div>
+                <?= Html::submitButton('Change Price and Discount', ['class' => 'btn btn-sm btn-outline-info mt-2']) ?>
+            </div>
             <?php ActiveForm::end(); ?>
         </div>
     </div>

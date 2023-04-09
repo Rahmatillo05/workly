@@ -28,11 +28,11 @@ use yii\widgets\ActiveForm;
                     <tbody>
                         <?php if ($products) : foreach ($products as $product) : ?>
                                 <tr>
-                                    <td><?= $product->name ?></td>
+                                    <td><?= $product->product->name ?></td>
                                     <td class="d-none"><?= $form->field($product, 'id')->hiddenInput(['name' => "Product_{$product->id}[id]"])->label(false) ?></td>
-                                    <td><?= $form->field($product, 'last_purchase_price')->textInput(['name' => "Product_{$product->id}[last_purchase_price] "])->label(false) ?></td>
-                                    <td><?= $form->field($product, 'last_sell_price')->textInput(['name' => "Product_{$product->id}[last_sell_price] "])->label(false) ?></td>
-                                    <td><?= $form->field($product, 'last_discount')->textInput(['name' => "Product_{$product->id}[last_discount] "])->label(false) ?></td>
+                                    <td><?= $form->field($product, 'purchase_price')->textInput(['name' => "Product_{$product->id}[purchase_price] "])->label(false) ?></td>
+                                    <td><?= $form->field($product, 'sell_price')->textInput(['name' => "Product_{$product->id}[sell_price] "])->label(false) ?></td>
+                                    <td><?= $form->field($product, 'discount')->textInput(['name' => "Product_{$product->id}[discount] "])->label(false) ?></td>
                                 </tr>
                         <?php endforeach;
                         endif;  ?>

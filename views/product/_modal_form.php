@@ -13,7 +13,7 @@ use yii\helpers\Url;
 <div class="p-2">
 
     <?php $form = ActiveForm::begin([
-        'action' =>  Url::toRoute(['product/update', 'id' => $model->id])
+        'action' =>  Url::toRoute(['product/create'])
     ]); ?>
 
     <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map($model->categoryList, 'id', 'name')) ?>
@@ -22,6 +22,12 @@ use yii\helpers\Url;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
+    <?= $form->field($model, 'has_came_amount')->textInput()->label('Product amount') ?>
+
+    <?= $form->field($model, 'purchase_price')->textInput()->label('Purchase Price $') ?>
+
+    <?= $form->field($model, 'sell_price')->textInput()->label('Sell Price $') ?>
+    <?= $form->field($model, 'discount')->textInput()->label('Discount %') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

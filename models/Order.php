@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "order".
@@ -23,6 +24,16 @@ class Order extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'order';
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'updatedAtAttribute' => false
+            ]
+        ];
     }
 
     /**
@@ -80,10 +91,32 @@ class Order extends \yii\db\ActiveRecord
         return false;
     }
 
-    public function getTodaySoldAmount()
+    public function todaySoldAmount()
     {
         $today = time();
         $yesterday = $today - 86400;
-        return self::find()->where(['between', 'created_at', $today, $yesterday])->all();
+        return self::find()->where(['BETWEEN', 'created_at', $yesterday, $today])->sum('sell_amount');
+    }
+
+    public function todaySalesAmount()
+    {
+        $today = time();
+        $yesterday = $today - 86400;
+        return self::find()->where(['BETWEEN', 'created_at', $yesterday, $today])->sum('sell_price');
+    }
+
+    public function calculateTotalValue()
+    {
+        $totalValue = 0;
+        $product_amounts = ProductAmountHistory::find()->all();
+        $product_prices = ProductPurchaseHistory::find()->all();
+        foreach ($product_amounts as $product_amount) {
+            foreach ($product_prices as $product_price) {
+                if ($product_price->product_id == $product_amount->product_id) {
+                    $totalValue += $product_amount->has_came_amount * $product_price->purchase_price;
+                }
+            }
+        }
+        return $totalValue;
     }
 }

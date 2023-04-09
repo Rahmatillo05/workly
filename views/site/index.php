@@ -6,7 +6,6 @@ use yii\helpers\Url;
  * @var yii\web\View $this
  * @var \app\models\Order $order
  */
-\yii\helpers\VarDumper::dump($order->todaySoldAmount, 10, true);
 
 $this->title = 'Workly task';
 ?>
@@ -20,21 +19,13 @@ $this->title = 'Workly task';
                     <div class="card-body">
                         <div class="card-title d-flex align-items-start justify-content-between">
                             <div class="avatar flex-shrink-0">
-                                <img src="<?= Url::base() ?>/img/icons/unicons/chart-success.png" alt="chart success" class="rounded" />
+                                <img src="<?= Url::base() ?>/img/icons/unicons/chart-success.png" alt="chart success"
+                                     class="rounded"/>
                             </div>
-                            <div class="dropdown">
-                                <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                    <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                                </div>
-                            </div>
+
                         </div>
-                        <span class="fw-semibold d-block mb-1">Profit</span>
-                        <h3 class="card-title mb-2">$12,628</h3>
-                        <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+                        <span class="fw-semibold d-block">Total sales amount</span>
+                        <h3 class="card-title mb-2  mt-3 mb-1"><?= $order::find()->sum('sell_price') ?> $</h3>
                     </div>
                 </div>
             </div>
@@ -43,21 +34,13 @@ $this->title = 'Workly task';
                     <div class="card-body">
                         <div class="card-title d-flex align-items-start justify-content-between">
                             <div class="avatar flex-shrink-0">
-                                <img src="<?= Url::base() ?>/img/icons/unicons/wallet-info.png" alt="Credit Card" class="rounded" />
+                                <img src="<?= Url::base() ?>/img/icons/unicons/wallet-info.png" alt="Credit Card"
+                                     class="rounded"/>
                             </div>
-                            <div class="dropdown">
-                                <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                                    <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                                </div>
-                            </div>
+
                         </div>
-                        <span>Sales</span>
-                        <h3 class="card-title text-nowrap mb-1">$4,679</h3>
-                        <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
+                        <span>Today's sales amount</span>
+                        <h3 class="card-title text-nowrap mt-3 mb-1"><?= $order->todaySalesAmount() ?> $</h3>
                     </div>
                 </div>
             </div>
@@ -70,21 +53,15 @@ $this->title = 'Workly task';
                     <div class="card-body">
                         <div class="card-title d-flex align-items-start justify-content-between">
                             <div class="avatar flex-shrink-0">
-                                <img src="<?= Url::base() ?>/img/icons/unicons/paypal.png" alt="Credit Card" class="rounded" />
+                                <img src="<?= Url::base() ?>/img/icons/unicons/cc-primary.png" alt="Credit Card"
+                                     class="rounded"/>
+
                             </div>
-                            <div class="dropdown">
-                                <button class="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
-                                    <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                                </div>
-                            </div>
+
                         </div>
-                        <span class="d-block mb-1">The remaining products volume</span>
-                        <h3 class="card-title text-nowrap mb-2"><?= $product_amount ?></h3>
-                        <small class="text-success fw-semibold">Bugun sotildi:<?//= $order->todaySoldAmount ?></small>
+                        <span class="d-block">The remaining products volume</span>
+                        <h3 class="card-title text-nowrap mb-1"><?= $product_amount ?></h3>
+                        <small class="text-success fw-semibold">Sold today: <?= $order->todaySoldAmount() ?></small>
                     </div>
                 </div>
             </div>
@@ -93,31 +70,18 @@ $this->title = 'Workly task';
                     <div class="card-body">
                         <div class="card-title d-flex align-items-start justify-content-between">
                             <div class="avatar flex-shrink-0">
-                                <img src="<?= Url::base() ?>/img/icons/unicons/cc-primary.png" alt="Credit Card" class="rounded" />
-                            </div>
-                            <div class="dropdown">
-                                <button class="btn p-0" type="button" id="cardOpt1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="cardOpt1">
-                                    <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                                </div>
+                                <img src="<?= Url::base() ?>/img/icons/unicons/paypal.png" alt="Credit Card"
+                                     class="rounded"/>
                             </div>
                         </div>
-                        <span class="fw-semibold d-block mb-1">Transactions</span>
-                        <h3 class="card-title mb-2">$14,857</h3>
-                        <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.14%</small>
+                        <span class="fw-semibold d-block mb-3">The amount spent on the product</span>
+                        <h3 class="card-title mb-2"><?= $order->calculateTotalValue() ?> $</h3>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
 
 
 <div class="row">
@@ -134,6 +98,30 @@ $this->title = 'Workly task';
             </div>
         </div>
     </div>
+    <div class="col-md-6 col-lg-4 order-2 mb-4">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="card-title m-0 me-2">Orders history</h5>
+            </div>
+            <div class="card-body">
+                <ul class="p-0 m-0">
+                    <li class="d-flex mb-4 pb-1">
+                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                                <small class="text-muted d-block mb-1">Paypal</small>
+                                <h6 class="mb-0">Send money</h6>
+                            </div>
+                            <div class="user-progress d-flex align-items-center gap-1">
+                                <h6 class="mb-0">+82.6</h6>
+                                <span class="text-muted">USD</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <div class="content-backdrop fade"></div>

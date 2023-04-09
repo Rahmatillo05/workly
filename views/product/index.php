@@ -85,13 +85,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => ActionColumn::class,
                         'urlCreator' => function ($action, Product $model, $key, $index, $column) {
                             return Url::toRoute([$action, 'id' => $model->id]);
-                        }
+                        },
+
                     ],
                 ],
             ]); ?>
             <div class="demo-inline-spacing d-flex justify-content-left align-items-center">
                 <i class="">With selected:</i>
                 <?= Html::submitButton('Change Price and Discount', ['class' => 'btn btn-sm btn-outline-info mt-2']) ?>
+                <?= Html::submitButton('Add amount', ['class' => 'btn btn-sm btn-outline-primary mt-2']) ?>
             </div>
             <?php ActiveForm::end(); ?>
         </div>

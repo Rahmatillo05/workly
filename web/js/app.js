@@ -28,7 +28,9 @@ $(function () {
             action,
             {product_id: product_id},
             function (data, textStatus, jqXHR) {
-                minPrice.val(parseInt(data.sell_price));
+                minPrice.val(data.discount);
+                $("#discount").text("Discount: " + data.discount_per + " %");
+                // console.log(data)
             },
             "json"
         );

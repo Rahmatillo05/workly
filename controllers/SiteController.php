@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\widgets\PriceFormatter;
 use app\models\Order;
 use app\models\ProductPurchaseHistory;
 use Yii;
@@ -32,7 +33,13 @@ class SiteController extends BaseController
         if ($this->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             $product_id = $this->request->post('product_id');
-            return ProductPurchaseHistory::find()->where(['product_id' => $product_id])->orderBy(['id' => SORT_DESC])->one();
+            $product = ProductPurchaseHistory::find()->where(['product_id' => $product_id])->orderBy(['id' => SORT_DESC])->one();
+            $discount = PriceFormatter::calculateDiscountSum($product->sell_price, $product->discount);
+            return [
+                'sell_price' => $product->sell_price,
+                'discount' => $discount,
+                'discount_per' => $product->discount
+            ];
         }
         if ($this->request->isPost){
             if ($model->load($this->request->post())){

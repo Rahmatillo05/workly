@@ -27,9 +27,10 @@ use yii\helpers\ArrayHelper;
         ]
     ]) ?>
     <label class="form-group">
-        Min sell price $
+        Min sell price with discount $
         <input type="text" id="mix-price" readonly class="form-control">
     </label>
+    <p id="discount"></p>
     <?= $form->field($model, 'sell_amount') ?>
     <label class="form-group">
         All sum $

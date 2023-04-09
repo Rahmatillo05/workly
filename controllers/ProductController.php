@@ -3,9 +3,7 @@
 namespace app\controllers;
 
 use app\models\Product;
-use app\models\ProductAmountHistory;
 use app\models\ProductCreateModel;
-use app\models\ProductPurchaseHistory;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;

@@ -94,6 +94,7 @@ class CategoryController extends BaseController
                 return $this->redirect(['index', 'category_id' => $model->category_id]);
             } else {
                 Yii::$app->session->setFlash('error', "Change not saved");
+                return $this->redirect(['index', 'category_id' => $model->category_id]);
             }
         }
     }

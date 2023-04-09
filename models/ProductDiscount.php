@@ -21,6 +21,23 @@ class ProductDiscount extends Model
 
     public function save()
     {
-        return Product::updateAll(['last_discount' => $this->discount], ['category_id' => $this->category_id]);
+        $result = false;
+        $products = Product::findAll(['category_id' => $this->category_id]);
+        foreach ($products as $product) {
+            $result = $this->setDiscount($product->id);
+        }
+        return $result;
+
+    }
+
+    private function setDiscount(int $id)
+    {
+        $price = ProductPurchaseHistory::find()
+            ->where(['product_id' => $id])
+            ->orderBy(['id' => SORT_DESC])
+            ->one();
+        $price->discount = $this->discount;
+
+        return $price->save();
     }
 }

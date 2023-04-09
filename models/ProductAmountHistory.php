@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "product_amount_history".
@@ -26,7 +27,14 @@ class ProductAmountHistory extends \yii\db\ActiveRecord
     {
         return 'product_amount_history';
     }
-
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class
+            ]
+        ];
+    }
     /**
      * {@inheritdoc}
      */

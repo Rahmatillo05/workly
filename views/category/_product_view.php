@@ -4,7 +4,7 @@ use app\models\ProductDiscount;
 use yii\helpers\Url;
 use yii\bootstrap5\Modal;
 use yii\widgets\ListView;
-use app\models\Product;
+use app\models\ProductCreateModel;
 use kartik\editable\Editable;
 use yii\bootstrap5\LinkPager;
 
@@ -19,7 +19,10 @@ use yii\bootstrap5\LinkPager;
                         'title' => '<h2>Create Product</h2>',
                         'toggleButton' => ['label' => 'Add product', 'class' => 'btn btn-success'],
                     ]);
-                    echo $this->render('_product_form', ['model' => new Product(), 'category' => $category]);
+                    echo $this->render('_product_form', [
+                        'model' => new ProductCreateModel(),
+                        'category' => $category
+                    ]);
                     Modal::end(); ?>
                     <?php Modal::begin([
                         'title' => '<h2>Set Discount</h2>',

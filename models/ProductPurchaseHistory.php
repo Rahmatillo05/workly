@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use app\models\Product;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "product_purchase_history".
@@ -56,7 +58,14 @@ class ProductPurchaseHistory extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
-
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class
+            ]
+        ];
+    }
     /**
      * Gets query for [[Product]].
      *

@@ -29,7 +29,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return 'product';
     }
-public function behaviors()
+    public function behaviors()
     {
         return [
             [
@@ -106,6 +106,4 @@ public function behaviors()
     {
         return $this->hasMany(ProductPurchaseHistory::class, ['product_id' => 'id']);
     }
-
-
 }

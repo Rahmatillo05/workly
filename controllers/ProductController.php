@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Product;
 use app\models\ProductAmountHistory;
+use app\models\ProductCreateModel;
 use app\models\ProductPurchaseHistory;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -61,21 +62,17 @@ class ProductController extends BaseController
      */
     public function actionCreate()
     {
-        $model = new Product();
-        $productPrice = new ProductPurchaseHistory();
-        $productAmount = new ProductAmountHistory();
+        $model = new ProductCreateModel();
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                if ($model->save() && $productAmount->isSave($model->id) && $productPrice->isSave($model->id)) {
+                if ($model->isSave()) {
                     Yii::$app->session->setFlash('success', "Product saved");
-                    return $this->redirect(Yii::$app->request->referrer);
                 } else {
                     Yii::$app->session->setFlash('success', "Error while product saved");
-                    return $this->redirect(Yii::$app->request->referrer);
                 }
+                return $this->redirect(Yii::$app->request->referrer);
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->redirect(['index']);

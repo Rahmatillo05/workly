@@ -6,8 +6,9 @@ use yii\helpers\Url;
  * @var yii\web\View $this
  * @var \app\models\Order $order
  */
+\yii\helpers\VarDumper::dump($order->todaySoldAmount, 10, true);
 
-$this->title = 'My Yii Application';
+$this->title = 'Workly task';
 ?>
 
 
@@ -81,9 +82,9 @@ $this->title = 'My Yii Application';
                                 </div>
                             </div>
                         </div>
-                        <span class="d-block mb-1">Payments</span>
-                        <h3 class="card-title text-nowrap mb-2">$2,456</h3>
-                        <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> -14.82%</small>
+                        <span class="d-block mb-1">The remaining products volume</span>
+                        <h3 class="card-title text-nowrap mb-2"><?= $product_amount ?></h3>
+                        <small class="text-success fw-semibold">Bugun sotildi:<?//= $order->todaySoldAmount ?></small>
                     </div>
                 </div>
             </div>

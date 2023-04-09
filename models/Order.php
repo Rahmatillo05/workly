@@ -79,4 +79,11 @@ class Order extends \yii\db\ActiveRecord
         }
         return false;
     }
+
+    public function getTodaySoldAmount()
+    {
+        $today = time();
+        $yesterday = $today - 86400;
+        return self::find()->where(['between', 'created_at', $today, $yesterday])->all();
+    }
 }

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\widgets\PriceFormatter;
 use app\models\Order;
+use app\models\ProductAmountHistory;
 use app\models\ProductPurchaseHistory;
 use Yii;
 use yii\web\Response;
@@ -14,8 +15,6 @@ use app\models\LoginForm;
  */
 class SiteController extends BaseController
 {
-
-
     /**
      * Displays homepage.
      *
@@ -24,7 +23,8 @@ class SiteController extends BaseController
     public function actionIndex()
     {
         $order = new Order();
-        return $this->render('index', compact('order'));
+        $product_amount = ProductAmountHistory::find()->sum('remaining_amount');
+        return $this->render('index', compact('order', 'product_amount'));
     }
 
     public function actionOrder()

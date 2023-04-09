@@ -106,4 +106,6 @@ public function behaviors()
     {
         return $this->hasMany(ProductPurchaseHistory::class, ['product_id' => 'id']);
     }
+
+
 }

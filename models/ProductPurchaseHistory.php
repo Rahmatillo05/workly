@@ -66,4 +66,10 @@ class ProductPurchaseHistory extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Product::class, ['id' => 'product_id']);
     }
+
+    public function saved($product_id)
+    {
+        $this->product_id = $product_id;
+        return $this->product_id ?? $this->save();
+    }
 }

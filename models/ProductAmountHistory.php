@@ -65,4 +65,12 @@ class ProductAmountHistory extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Product::class, ['id' => 'product_id']);
     }
+
+    public function isSave($product_id)
+    {
+        $this->sold_amount = 0;
+        $this->remaining_amount = $this->has_came_amount;
+        $this->product_id = $product_id;
+        return $this->product_id ?? $this->save();
+    }
 }

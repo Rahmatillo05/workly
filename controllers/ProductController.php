@@ -1,8 +1,10 @@
 <?php
 
-namespace backend\controllers;
+namespace app\controllers;
 
-use common\models\Product;
+use app\models\Product;
+use app\models\ProductAmountHistory;
+use app\models\ProductPurchaseHistory;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
@@ -61,13 +63,16 @@ class ProductController extends BaseController
     public function actionCreate()
     {
         $model = new Product();
-
+        $productPrice = new ProductPurchaseHistory();
+        $productAmount = new ProductAmountHistory();
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                if ($model->isSaved()) {
+                if ($model->save() && $productAmount->isSave($model->id) && $productPrice->isSAve($model->id)) {
+                    Yii::$app->session->setFlash('success', "Product saved");
                     return $this->redirect(Yii::$app->request->referrer);
                 } else {
-                    throw new ServerErrorHttpException("Saqlashda xatolik!");
+                    Yii::$app->session->setFlash('success', "Error while product saved");
+                    return $this->redirect(Yii::$app->request->referrer);
                 }
             }
         } else {

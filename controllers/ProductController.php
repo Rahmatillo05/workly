@@ -157,8 +157,8 @@ class ProductController extends BaseController
                     Yii::$app->session->setFlash('success', "New value added successfully");
                     return $this->redirect(['index']);
                 } else {
-                    print_r($amount->isSave());
-                    return false;
+                    Yii::$app->session->setFlash('error', "New value added failed");
+                    return $this->redirect(['index']);
                 }
             }
         }

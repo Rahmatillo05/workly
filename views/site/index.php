@@ -25,7 +25,7 @@ $this->title = 'Workly task';
 
                         </div>
                         <span class="fw-semibold d-block">Total sales amount</span>
-                        <h3 class="card-title mb-2  mt-3 mb-1"><?= $order::find()->sum('sell_price') ?> $</h3>
+                        <h3 class="card-title mb-2  mt-3 mb-1"><?= $order::find()->sum('sell_price') ?? 0 ?> $</h3>
                     </div>
                 </div>
             </div>
@@ -40,7 +40,7 @@ $this->title = 'Workly task';
 
                         </div>
                         <span>Today's sales amount</span>
-                        <h3 class="card-title text-nowrap mt-3 mb-1"><?= $order->todaySalesAmount() ?> $</h3>
+                        <h3 class="card-title text-nowrap mt-3 mb-1"><?= $order->todaySalesAmount() ?? 0 ?> $</h3>
                     </div>
                 </div>
             </div>
@@ -60,8 +60,8 @@ $this->title = 'Workly task';
 
                         </div>
                         <span class="d-block">The remaining products volume</span>
-                        <h3 class="card-title text-nowrap mb-1"><?= $product_amount ?></h3>
-                        <small class="text-success fw-semibold">Sold today: <?= $order->todaySoldAmount() ?></small>
+                        <h3 class="card-title text-nowrap mb-1"><?= $product_amount ?? 0 ?></h3>
+                        <small class="text-success fw-semibold">Sold today: <?= $order->todaySoldAmount() ?? 0 ?></small>
                     </div>
                 </div>
             </div>

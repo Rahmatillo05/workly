@@ -8,7 +8,6 @@ use app\models\ProductPurchaseHistory;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
-use yii\web\ServerErrorHttpException;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -67,7 +66,7 @@ class ProductController extends BaseController
         $productAmount = new ProductAmountHistory();
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                if ($model->save() && $productAmount->isSave($model->id) && $productPrice->isSAve($model->id)) {
+                if ($model->save() && $productAmount->isSave($model->id) && $productPrice->isSave($model->id)) {
                     Yii::$app->session->setFlash('success', "Product saved");
                     return $this->redirect(Yii::$app->request->referrer);
                 } else {

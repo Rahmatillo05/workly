@@ -39,6 +39,7 @@ class ProductPurchaseHistory extends \yii\db\ActiveRecord
             [['purchase_price', 'sell_price', 'discount'], 'number'],
             [['product_id', 'created_at', 'updated_at'], 'default', 'value' => null],
             [['product_id', 'created_at', 'updated_at'], 'integer'],
+            [['sell_price'], 'compare', 'compareAttribute' => 'purchase_price', 'operator'=>'>='],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::class, 'targetAttribute' => ['product_id' => 'id']],
         ];
     }

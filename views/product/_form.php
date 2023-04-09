@@ -1,5 +1,6 @@
 <?php
 
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap5\ActiveForm;
@@ -16,7 +17,9 @@ use yii\helpers\Url;
         'action' =>  Url::toRoute(['product/update', 'id' => $model->id])
     ]); ?>
 
-    <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map($model->categoryList, 'id', 'name')) ?>
+    <?= $form->field($model, 'category_id')->widget(Select2::class, [
+        'data' => ArrayHelper::map($model->categoryList, 'id', 'name', 'category.name')
+    ])?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

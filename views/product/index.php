@@ -22,14 +22,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="card-header pb-0">
             <h2><?= Html::encode($this->title) ?></h2>
 
-            <p>
+            <div class="d-flex">
                 <?php Modal::begin([
                     'title' => '<h2>Create Product</h2>',
                     'toggleButton' => ['label' => 'Create product', 'class' => 'btn btn-success'],
                 ]);
                 echo $this->render('_modal_form', ['model' => new ProductCreateModel()]);
                 Modal::end(); ?>
-            </p>
+            </div>
         </div>
 
         <div class="card-body table-responsive text-nowrap pt-1">
@@ -86,14 +86,21 @@ $this->params['breadcrumbs'][] = $this->title;
                         'urlCreator' => function ($action, Product $model, $key, $index, $column) {
                             return Url::toRoute([$action, 'id' => $model->id]);
                         },
-
+                        'template' => ' {add-amount} {view} {update} {delete} ',
+                        'buttons' => [
+                            'add-amount' => function ($url, $model) {
+                                return Html::a('<i class="btn btn-sm btn-success bx bx-plus"></i>',
+                                    $url, [
+                                        'title' => "Add Amound"
+                                    ]);
+                            }
+                        ]
                     ],
                 ],
             ]); ?>
             <div class="demo-inline-spacing d-flex justify-content-left align-items-center">
                 <i class="">With selected:</i>
                 <?= Html::submitButton('Change Price and Discount', ['class' => 'btn btn-sm btn-outline-info mt-2']) ?>
-                <?= Html::submitButton('Add amount', ['class' => 'btn btn-sm btn-outline-primary mt-2']) ?>
             </div>
             <?php ActiveForm::end(); ?>
         </div>

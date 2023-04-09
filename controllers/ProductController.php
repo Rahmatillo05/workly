@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Product;
+use app\models\ProductAmountHistory;
 use app\models\ProductCreateModel;
 use app\models\ProductPurchaseHistory;
 use Yii;
@@ -141,6 +142,31 @@ class ProductController extends BaseController
             }
         }
         return $this->redirect(['index']);
+    }
+
+    public function actionAddAmount($id)
+    {
+        $amount = new ProductAmountHistory();
+        $price = ProductPurchaseHistory::findOne(['product_id' => $id]);
+        if ($this->request->isPost) {
+            if ($amount->load($this->request->post()) && $price->load($this->request->post())) {
+                $amount->product_id = $id;
+                $amount->sold_amount = 0;
+                $amount->remaining_amount = $amount->has_came_amount;
+                if ($amount->save() && $price->isSave()) {
+                    Yii::$app->session->setFlash('success', "New value added successfully");
+                    return $this->redirect(['index']);
+                } else {
+                    print_r($amount->isSave());
+                    return false;
+                }
+            }
+        }
+
+        return $this->render('add-amount', [
+            'model' => $amount,
+            'price' => $price
+        ]);
     }
 
     /**

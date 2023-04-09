@@ -27,6 +27,7 @@ class ProductAmountHistory extends \yii\db\ActiveRecord
     {
         return 'product_amount_history';
     }
+
     public function behaviors()
     {
         return [
@@ -35,6 +36,7 @@ class ProductAmountHistory extends \yii\db\ActiveRecord
             ]
         ];
     }
+
     /**
      * {@inheritdoc}
      */
@@ -43,7 +45,7 @@ class ProductAmountHistory extends \yii\db\ActiveRecord
         return [
             [['product_id', 'has_came_amount', 'sold_amount', 'remaining_amount', 'created_at', 'updated_at'], 'default', 'value' => null],
             [['product_id', 'has_came_amount', 'sold_amount', 'remaining_amount', 'created_at', 'updated_at'], 'integer'],
-            [['has_came_amount', 'sold_amount', 'remaining_amount'], 'required'],
+            [['has_came_amount'], 'required'],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::class, 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
@@ -74,11 +76,26 @@ class ProductAmountHistory extends \yii\db\ActiveRecord
         return $this->hasOne(Product::class, ['id' => 'product_id']);
     }
 
-    public function isSave($product_id)
+    public function isSave()
     {
-        $this->sold_amount = 0;
-        $this->remaining_amount = $this->has_came_amount;
-        $this->product_id = $product_id;
-        return $this->product_id ?? $this->save();
+        $model = new ProductAmountHistory();
+        $model->product_id = $this->product_id;
+        $model->sold_amount = 0;
+        $model->remaining_amount = $this->has_came_amount;
+
+        // validate the model
+        if (!$model->validate()) {
+            return $model->errors;
+        }
+
+        // save the model
+        if ($model->save()) {
+            return true;
+        }
+
+        // return errors if save failed
+        return $model->errors;
     }
+
+
 }

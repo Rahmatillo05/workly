@@ -98,7 +98,7 @@ class Product extends \yii\db\ActiveRecord
      */
     public function getProductAmountHistories()
     {
-        return $this->hasMany(ProductAmountHistory::class, ['product_id' => 'id']);
+        return ProductAmountHistory::find()->where(['product_id' => $this->id])->orderBy(['id' => SORT_DESC])->all();
     }
 
     /**

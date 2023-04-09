@@ -39,7 +39,7 @@ class ProductPurchaseHistory extends \yii\db\ActiveRecord
             [['purchase_price', 'sell_price', 'discount'], 'number'],
             [['product_id', 'created_at', 'updated_at'], 'default', 'value' => null],
             [['product_id', 'created_at', 'updated_at'], 'integer'],
-            [['sell_price'], 'compare', 'compareAttribute' => 'purchase_price', 'operator'=>'>'],
+            [['sell_price'], 'compare', 'compareAttribute' => 'purchase_price', 'operator' => '>'],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::class, 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
@@ -91,5 +91,15 @@ class ProductPurchaseHistory extends \yii\db\ActiveRecord
             $result = $model->save();
         }
         return $result;
+    }
+
+    public function isSave(): bool
+    {
+        $model = new ProductPurchaseHistory();
+        $model->product_id = $this->product_id;
+        $model->purchase_price = $this->purchase_price;
+        $model->sell_price = $this->sell_price;
+        $model->discount = $this->discount;
+        return $model->save();
     }
 }

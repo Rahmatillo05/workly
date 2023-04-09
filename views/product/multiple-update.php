@@ -2,7 +2,7 @@
 
 use yii\bootstrap5\Html;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
+use kartik\form\ActiveForm;
 
 /**
  * @var \common\models\Product $products

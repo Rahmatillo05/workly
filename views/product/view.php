@@ -1,13 +1,12 @@
 <?php
 
 use yii\helpers\Html;
-use yii\web\YiiAsset;
-use common\models\Product;
+use app\models\Product;
 use yii\widgets\DetailView;
-use common\components\widgets\PriceFormatter;
+use app\components\widgets\PriceFormatter;
 
 /** @var yii\web\View $this */
-/** @var common\models\Product $model */
+/** @var app\models\Product $model */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
@@ -47,21 +46,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'name',
                         'description:ntext',
-                        'remaining_amount',
                         [
-                            'attribute' => 'last_purchase_price',
-                            'label' => 'Purchase price',
+                            'attribute' => 'amount',
                             'value' => function (Product $model) {
-                                return PriceFormatter::productPriceDifference($model);
+                                return round($model->productAmountHistories[0]->remaining_amount, 1) . " $";
                             },
-                            'format' => 'html'
+                            'label' => 'Amount'
                         ],
-                        'last_sell_price',
+                        [
+                            'attribute' => 'last_sell_price',
+                            'value' => function (Product $model) {
+                                return round($model->productPurchaseHistories[0]->sell_price, 1) . " $";
+                            },
+                            'label' => 'Sell price'
+                        ],
                         [
                             'attribute' => 'last_discount',
                             'value' => function (Product $model) {
-                                $discount_price = PriceFormatter::calculateDiscountSum($model->last_sell_price, $model->last_discount);
-                                return Html::tag('span', "{$discount_price} $ ({$model->last_discount}%)", ['class' => 'badge bg-label-info']);
+                                $discount_price = PriceFormatter::calculateDiscountSum($model->productPurchaseHistories[0]->sell_price, $model->productPurchaseHistories[0]->discount);
+                                return Html::tag('span', "{$discount_price} $ ({$model->productPurchaseHistories[0]->discount}%)", ['class' => 'badge bg-label-info']);
                             },
                             'label' => 'Discount price',
                             'format' => 'html'

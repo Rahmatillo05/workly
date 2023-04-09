@@ -61,7 +61,8 @@ $this->title = 'Workly task';
                         </div>
                         <span class="d-block">The remaining products volume</span>
                         <h3 class="card-title text-nowrap mb-1"><?= $product_amount ?? 0 ?></h3>
-                        <small class="text-success fw-semibold">Sold today: <?= $order->todaySoldAmount() ?? 0 ?></small>
+                        <small class="text-success fw-semibold">Sold
+                            today: <?= $order->todaySoldAmount() ?? 0 ?></small>
                     </div>
                 </div>
             </div>
@@ -88,9 +89,8 @@ $this->title = 'Workly task';
     <div class="col-md-8 col-lg-6 col-xl-4 order-0 mb-4">
         <div class="card h-100">
             <div class="card-header d-flex align-items-center justify-content-between pb-0">
-                <div class="card-title mb-0">
+                <div class="card-title mb-3">
                     <h5 class="m-0 me-2">New Order</h5>
-                    <small class="text-muted">42.82k Total Sales</small>
                 </div>
             </div>
             <div class="card-body">
@@ -100,23 +100,15 @@ $this->title = 'Workly task';
     </div>
     <div class="col-md-6 col-lg-4 order-2 mb-4">
         <div class="card h-100">
-            <div class="card-header d-flex align-items-center justify-content-between">
+            <div class="card-header">
                 <h5 class="card-title m-0 me-2">Orders history</h5>
+                <div class="mt-2">
+                    <?= $this->render('_order_sorting', ['model' => $order_sorting]) ?>
+                </div>
             </div>
             <div class="card-body">
                 <ul class="p-0 m-0">
-                    <li class="d-flex mb-4 pb-1">
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <small class="text-muted d-block mb-1">Paypal</small>
-                                <h6 class="mb-0">Send money</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">+82.6</h6>
-                                <span class="text-muted">USD</span>
-                            </div>
-                        </div>
-                    </li>
+                    <?= $this->render('_order_view', ['orders' => $order_sorting->orderSorting()]) ?>
                 </ul>
             </div>
         </div>

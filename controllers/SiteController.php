@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\widgets\PriceFormatter;
 use app\models\Order;
+use app\models\OrderSorting;
 use app\models\ProductAmountHistory;
 use app\models\ProductPurchaseHistory;
 use Yii;
@@ -23,8 +24,12 @@ class SiteController extends BaseController
     public function actionIndex()
     {
         $order = new Order();
+        $order_sorting = new OrderSorting();
         $product_amount = ProductAmountHistory::find()->sum('remaining_amount');
-        return $this->render('index', compact('order', 'product_amount'));
+        if ($order_sorting->load($this->request->get())){
+            $order_sorting->orderSorting();
+        }
+        return $this->render('index', compact('order', 'order_sorting', 'product_amount'));
     }
 
     public function actionOrder()

@@ -119,4 +119,14 @@ class Order extends \yii\db\ActiveRecord
         }
         return $totalValue;
     }
+
+    public function getAllOrderSum()
+    {
+        return self::find()->sum('sell_price');
+    }
+
+    public function getTotalOrder()
+    {
+        return self::find()->sum('sell_amount');
+    }
 }

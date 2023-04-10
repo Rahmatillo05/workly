@@ -25,7 +25,8 @@ class OrderSorting extends Model
             $end = strtotime($this->end_time);
             $orders->where(['BETWEEN', 'created_at', $start, $end]);
         }
-        return $orders->all();
-
+        return $orders->orderBy(['id' => SORT_DESC])->all();
     }
+
+
 }

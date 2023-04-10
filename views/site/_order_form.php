@@ -38,7 +38,7 @@ use yii\helpers\ArrayHelper;
     </label>
     <?= $form->field($model, 'sell_price') ?>
 
-    <div class="form-group">
+    <div class="form-group ">
         <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'id' => 'order-button']) ?>
     </div>
     <?php ActiveForm::end(); ?>

@@ -108,7 +108,9 @@ $this->title = 'Workly task';
             </div>
             <div class="card-body">
                 <ul class="p-0 m-0">
-                    <?= $this->render('_order_view', ['orders' => $order_sorting->orderSorting()]) ?>
+                    <div class="accordion mt-3" id="orderHistory">
+                        <?= $this->render('_order_view', ['orders' => $order_sorting->orderSorting()]) ?>
+                    </div>
                 </ul>
             </div>
         </div>

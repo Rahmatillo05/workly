@@ -15,7 +15,7 @@ echo $form->field($model, 'start_time')->widget(DatePicker::class, [
     'pluginOptions' => [
         'format' => 'dd-mm-yyyy',
         'todayHighlight' => true,
-        'autoclose'=>true,
+        'autoclose' => true,
     ],
     'pickerIcon' => "<i class='bx bxs-calendar'></i>",
     'removeIcon' => "<i class='bx bx-reset text-danger'></i>"
@@ -26,13 +26,17 @@ echo $form->field($model, 'end_time')->widget(DatePicker::class, [
     'pluginOptions' => [
         'format' => 'dd-mm-yyyy',
         'todayHighlight' => true,
-        'autoclose'=>true,
+        'autoclose' => true,
     ],
     'pickerIcon' => "<i class='bx bxs-calendar'></i>",
     'removeIcon' => "<i class='bx bx-reset text-danger'></i>"
 ])->label(false);
+?>
+<div class="form-group d-flex justify-content-between align-items-center">
 
-echo Html::submitButton('Sorting', ['class' => 'btn btn-primary']);
-
+    <?= Html::submitButton('Sorting', ['class' => 'btn btn-primary']); ?>
+    <?= Html::a('All', ['site/index'], ['class' => 'btn btn-outline-primary', 'id' => 'order-button']); ?>
+</div>
+<?php
 ActiveForm::end();
 ?>

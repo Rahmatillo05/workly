@@ -33,6 +33,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return 'product';
     }
+
     public function behaviors()
     {
         return [
@@ -41,6 +42,7 @@ class Product extends \yii\db\ActiveRecord
             ]
         ];
     }
+
     /**
      * {@inheritdoc}
      */
@@ -110,12 +112,25 @@ class Product extends \yii\db\ActiveRecord
     {
         return ProductPurchaseHistory::find()->where(['product_id' => $this->id])->orderBy(['id' => SORT_DESC])->all();
     }
+
     public function getCategoryList()
     {
         return Category::find()->all();
     }
+
     public function getRemainingAmount()
     {
         return ProductAmountHistory::find()->where(['product_id' => $this->id])->sum('remaining_amount');
+    }
+
+    public function getOrderAmount()
+    {
+        $orders = Order::findAll(['product_id' => $this->id]);
+        $data = [];
+        foreach ($orders as $order) {
+            $data[] = $order->sell_amount;
+        }
+
+        return json_encode($data);
     }
 }

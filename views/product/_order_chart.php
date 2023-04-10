@@ -11,7 +11,7 @@
                     <span class="badge bg-label-warning rounded-pill">This month</span>
                 </div>
                 <div class="mt-sm-auto">
-                    <h3 class="mb-0"><?= 56 ?></h3>
+                    <h3 class="mb-0"><?= $orders->getOrdersAmount() ?></h3>
                 </div>
             </div>
             <div id="orderStatChart"></div>

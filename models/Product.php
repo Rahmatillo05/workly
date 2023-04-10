@@ -133,4 +133,8 @@ class Product extends \yii\db\ActiveRecord
 
         return json_encode($data);
     }
+    public function getOrdersAmount()
+    {
+        return Order::find()->where(['product_id' => $this->id])->sum('sell_amount');
+    }
 }

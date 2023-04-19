@@ -31,7 +31,8 @@ class BaseController extends Controller
                             'set-discount',
                             'logout',
                             'add-amount',
-                            'order'
+                            'order',
+                            'login-history'
                         ],
                         'allow' => true,
                         'roles' => ['@'],

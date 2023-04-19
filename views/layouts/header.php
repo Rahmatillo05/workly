@@ -28,7 +28,12 @@ use yii\helpers\Url;
                 <a class="github-button" href="https://github.com/Rahmatillo05/workly" data-size="large"
                    data-show-count="true" aria-label="Star Rahmatillo05/workly on GitHub">Star</a>
             </li>
-
+            <li class="nav-item">
+                <a class="dropdown-item" href="<?= Url::to(['site/login-history']) ?>">
+                    <i class="bx bx-history me-2"></i>
+                    <span class="align-middle">Login history</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="dropdown-item text-danger" href="<?= Url::to(['site/logout']) ?>" data-method="post">
                     <i class="bx bx-power-off me-2"></i>

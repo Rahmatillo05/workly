@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\widgets\PriceFormatter;
+use app\models\LoginHistory;
 use app\models\Order;
 use app\models\OrderSorting;
 use app\models\ProductAmountHistory;
@@ -77,6 +78,12 @@ class SiteController extends BaseController
         return $this->render('login', [
             'model' => $model,
         ]);
+    }
+
+    public function actionLoginHistory()
+    {
+        $history = LoginHistory::find()->where(['user_id' => Yii::$app->user->id])->all();
+        return $this->render('login-history', compact('history'));
     }
 
     /**

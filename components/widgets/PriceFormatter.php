@@ -8,50 +8,38 @@ use yii\base\Widget;
 class PriceFormatter extends Widget
 {
 
-
-    public function init()
+    public static function productPurchasePriceDifference($old_price, $new_price): string
     {
-        parent::init();
-    }
 
-    public static function productPurchasePriceDifference(Product $product): string
-    {
-        $price = round($product->purchaseHistories[0]->purchase_price, 1);
-
-        if (!isset($product->purchaseHistories[1])) {
-            return "{$price} $";
+        if (is_null($old_price)) {
+            return round($new_price, 1) ." $";
         }
-
-        $oldPrice = $product->purchaseHistories[1]->purchase_price;
-        $newPrice = $product->purchaseHistories[0]->purchase_price;
-        $oldDiff = $newPrice - $oldPrice;
-
-        if ($oldPrice > $newPrice) {
-            return "<span>{$price} $ <i class='badge bg-success bx bx-minus'>{$oldDiff}</i></span>";
-        } elseif ($oldPrice < $newPrice) {
-            return "<span>{$price} $ <i class='badge bg-label-danger bx bx-plus'> {$oldDiff} $</i></span>";
+        $old_price = round($old_price, 1);
+        $new_price = round($new_price, 1);
+        $oldDiff = $old_price - $new_price;
+        if ($old_price > $new_price) {
+            return "<span>{$new_price} $ <i class='badge bg-success bx bxs-arrow-to-bottom'>{$oldDiff} $</i></span>";
+        } elseif ($old_price < $new_price) {
+            return "<span>{$new_price} $ <i class='badge bg-label-danger bx bxs-arrow-to-top'> {$oldDiff} $</i></span>";
         } else {
-            return "<span>{$price} $</span>";
+            return "<span>{$new_price} $</span>";
         }
     }
-    public static function productSellPriceDifference(Product $product): string
+    public static function productSellPriceDifference($old_price, $new_price): string
     {
-        $price = round($product->purchaseHistories[0]->sell_price, 1);
-
-        if (!isset($product->purchaseHistories[1])) {
-            return "{$price} $";
+        if (is_null($old_price)) {
+            return round($new_price, 1) ." $";
         }
+        $old_price = round($old_price, 1);
+        $new_price = round($new_price, 1);
+        $oldDiff = $old_price - $new_price;
 
-        $oldPrice = $product->purchaseHistories[1]->sell_price;
-        $newPrice = $product->purchaseHistories[0]->sell_price;
-        $oldDiff = $newPrice - $oldPrice;
-
-        if ($oldPrice > $newPrice) {
-            return "<span>{$price} $ <i class='badge bg-success bx bx-minus'>{$oldDiff}</i></span>";
-        } elseif ($oldPrice < $newPrice) {
-            return "<span>{$price} $ <i class='badge bg-label-danger bx bx-minus'> {$oldDiff} $</i></span>";
+        if ($old_price > $new_price) {
+            return "<span>{$new_price} $ <i class='badge bg-label-danger bx bxs-arrow-to-bottom'>{$oldDiff} $</i></span>";
+        } elseif ($old_price < $new_price) {
+            return "<span>{$new_price} $ <i class='badge bg-success bx bxs-arrow-to-top'> {$oldDiff} $</i></span>";
         } else {
-            return "<span>{$price} $</span>";
+            return "<span>{$new_price} $</span>";
         }
     }
     public static function calculateDiscountSum($price, $discount): float

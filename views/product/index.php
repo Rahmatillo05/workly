@@ -59,14 +59,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'purchase_price',
                         'value' => function(Product $model){
-                            return PriceFormatter::productPurchasePriceDifference($model);
-                        }
+                            $oldPrice = isset($model->purchaseHistories[1]) ? $model->purchaseHistories[1]->purchase_price : null;
+                            return PriceFormatter::productPurchasePriceDifference($oldPrice, $model->purchase_price);
+                        },
+                        'format' => 'html'
                     ],
                     [
                         'attribute' => 'sell_price',
                         'value' => function(Product $model){
-                            return PriceFormatter::productSellPriceDifference($model);
-                        }
+                            $oldPrice = isset($model->purchaseHistories[1]) ? $model->purchaseHistories[1]->sell_price : null;
+                            return PriceFormatter::productSellPriceDifference($oldPrice, $model->sell_price);
+                        },
+                        'format' => 'html'
                     ],
                     [
                         'attribute' => 'discount',
@@ -77,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'html'
                     ],
                     'remaining',
-                    'created_at:date',
+                    'updated_at:date',
                     [
                         'class' => ActionColumn::class,
                         'urlCreator' => function ($action, Product $model, $key, $index, $column) {

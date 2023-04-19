@@ -104,7 +104,12 @@ class Product extends \yii\db\ActiveRecord
      */
     public function getPurchaseHistories()
     {
-        return $this->hasMany(PurchaseHistory::class, ['product_id' => 'id']);
+        return PurchaseHistory::find()->where(['product_id' => $this->id])->orderBy(['id' => SORT_DESC])->limit(2)->all();
+    }
+
+    public function getCategoryList()
+    {
+        return Category::find()->orderBy(['id' => SORT_DESC])->all();
     }
 
     public function getRemaining(): int
@@ -112,5 +117,12 @@ class Product extends \yii\db\ActiveRecord
         $amount = $this->amount;
 
         return $amount->came - $amount->sold;
+    }
+
+    public function amountUpdate($newAmount): bool
+    {
+        $amount = ProductAmount::findOne($this->amount_id);
+        $amount->came += $newAmount;
+        return $amount->save();
     }
 }

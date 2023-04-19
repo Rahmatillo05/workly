@@ -6,6 +6,7 @@ use app\models\Product;
 use app\models\ProductAmountHistory;
 use app\models\ProductCreateModel;
 use app\models\ProductPurchaseHistory;
+use app\models\PurchaseHistory;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\helpers\VarDumper;
@@ -147,14 +148,10 @@ class ProductController extends BaseController
 
     public function actionAddAmount($id)
     {
-        $amount = new ProductAmountHistory();
-        $price = ProductPurchaseHistory::findOne(['product_id' => $id]);
+        $amount = new PurchaseHistory();
         if ($this->request->isPost) {
-            if ($amount->load($this->request->post()) && $price->load($this->request->post())) {
-                $amount->product_id = $id;
-                $amount->sold_amount = 0;
-                $amount->remaining_amount = $amount->has_came_amount;
-                if ($amount->save() && $price->isSave()) {
+            if ($amount->load($this->request->post())) {
+                if ($amount->isSave($id)) {
                     Yii::$app->session->setFlash('success', "New value added successfully");
                     return $this->redirect(['index']);
                 } else {
@@ -165,8 +162,7 @@ class ProductController extends BaseController
         }
 
         return $this->render('add-amount', [
-            'model' => $amount,
-            'price' => $price
+            'model' => $amount
         ]);
     }
 

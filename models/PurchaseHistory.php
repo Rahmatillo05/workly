@@ -41,7 +41,7 @@ class PurchaseHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product_id', 'amount'], 'required'],
+            [['product_id', 'amount', 'sell_price', 'purchase_price'], 'required'],
             [['product_id', 'amount', 'created_at'], 'integer'],
             [['purchase_price', 'sell_price'], 'number'],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::class, 'targetAttribute' => ['product_id' => 'id']],
@@ -71,5 +71,25 @@ class PurchaseHistory extends \yii\db\ActiveRecord
     public function getProduct()
     {
         return $this->hasOne(Product::class, ['id' => 'product_id']);
+    }
+
+    public function isSave($product_id): bool
+    {
+        $this->product_id = $product_id;
+        if ($this->productUpdate($product_id)){
+            return $this->save();
+        }
+        return false;
+    }
+
+    private function productUpdate($product_id): bool
+    {
+        $product = Product::findOne($product_id);
+        $product->purchase_price = $this->purchase_price;
+        $product->sell_price = $this->sell_price;
+        if ($product->amountUpdate($this->amount)){
+            return $product->save();
+        }
+        return false;
     }
 }

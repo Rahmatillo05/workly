@@ -22,7 +22,8 @@
         "kartik-v/yii2-widget-select2": "*",
         "kartik-v/yii2-widget-datepicker": "@dev",
       "ext-intl": "*",
-      "ext-json": "*"
+      "ext-json": "*",
+        "nyx-solutions/yii2-nyx-user-agent-parser": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use nyx\components\http\userAgent\UserAgentParser;
 use Yii;
 use yii\base\Model;
 
@@ -60,9 +61,11 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            if (Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0)) {
+                return $this->loginHistorySave($this->getUser()->id, LoginHistory::STATUS_SUCCESS);
+            }
         }
-        return false;
+        return $this->loginHistorySave($this->getUser()->id, LoginHistory::STATUS_FAILED);
     }
 
     /**
@@ -77,5 +80,44 @@ class LoginForm extends Model
         }
 
         return $this->_user;
+    }
+
+    private function loginHistorySave(int $id, $status): bool
+    {
+        $user_agent = UserAgentParser::parse();
+        $history = new LoginHistory();
+        $history->user_id = $id;
+        $history->device = $user_agent->browser . " - " . $user_agent->platform;
+        $history->location = $this->userLocation();
+        $history->ip = Yii::$app->request->userIP;
+        $history->created_at = time();
+        $history->status = $status;
+        if ($history->status === LoginHistory::STATUS_SUCCESS) {
+            return $history->save();
+        } else {
+            $history->save();
+            return false;
+        }
+    }
+
+    private function userLocation(): string
+    {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else if (!empty($_SERVER['REMOTE_ADDR'])) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $ip = false;
+        }
+        $ip_info = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $ip));
+        $country = $ip_info['geoplugin_countryName'];
+        $city = $ip_info['geoplugin_city'];
+        if ($city && $country) {
+            return $city . " - " . $country;
+        } else {
+            return "Undefined location";
+        }
     }
 }

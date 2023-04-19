@@ -120,6 +120,18 @@ class Product extends \yii\db\ActiveRecord
         return $amount->came - $amount->sold;
     }
 
+    public function getTotalSpentSum()
+    {
+        $sum = PurchaseHistory::find()->where(['product_id' => $this->id])->sum('purchase_price');
+        return round($sum, 1);
+    }
+
+    public function getTotalRemainingSum()
+    {
+        $sum = $this->getRemaining() * $this->sell_price;
+        return round($sum, 1);
+    }
+
     public function amountUpdate($newAmount): bool
     {
         $amount = ProductAmount::findOne($this->amount_id);

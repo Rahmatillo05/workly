@@ -7,11 +7,10 @@
         <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
             <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
                 <div class="card-title">
-                    <h3 class="text-nowrap mb-2">Order stats</h3>
                     <span class="badge bg-label-warning rounded-pill">This month</span>
                 </div>
                 <div class="mt-sm-auto">
-                    <h3 class="mb-0"><?= $orders->getOrdersAmount() ?></h3>
+                    <h3 class="mb-0"><?//= $orders->getOrdersAmount() ?></h3>
                 </div>
             </div>
             <div id="orderStatChart"></div>
@@ -64,7 +63,7 @@ const profileReportChartEl = document.querySelector('#orderStatChart'),
             series: [
                 {
                     name: "Amount",
-                    data: {$orders->orderAmount}
+                    data: []
                 }
             ],
             xaxis: {
@@ -88,6 +87,6 @@ const profileReportChartEl = document.querySelector('#orderStatChart'),
         profileReportChart.render();
     }
 JS;
-$this->registerJs($js);
+//$this->registerJs($js);
 ?>
 

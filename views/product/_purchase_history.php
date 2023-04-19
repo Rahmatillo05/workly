@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \app\models\Order $history
+ * @var \app\models\PurchaseHistory $history
  */
 
 use app\components\widgets\PriceFormatter;
@@ -13,7 +13,7 @@ use app\components\widgets\PriceFormatter;
         <h2 class="accordion-header" id="headingOne">
             <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse"
                     data-bs-target="#purchase_<?= $order->id ?>" aria-expanded="false" aria-controls="purchase_<?= $order->id ?>">
-                Order date:
+                Purchased:
                 <?= date('H:i d-m-Y', $order->created_at) ?>
             </button>
         </h2>
@@ -27,14 +27,12 @@ use app\components\widgets\PriceFormatter;
                         <th>Amount</th>
                         <th>Purchase Price</th>
                         <th>Sell price</th>
-                        <th>Discount</th>
                     </tr>
                     <tr>
                         <td><?= $order->id ?></td>
-                        <td><?= $order->product->productAmountHistories[0]->has_came_amount ?></td>
+                        <td><?= $order->amount ?></td>
                         <td><?= $order->purchase_price ?> $</td>
                         <td><?= $order->sell_price ?> $</td>
-                        <td><?= $order->discount ?> % (<?= PriceFormatter::calculateDiscountSum($order->sell_price, $order->discount) ?> $)</td>
                     </tr>
                 </table>
             </div>

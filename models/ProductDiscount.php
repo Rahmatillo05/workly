@@ -21,12 +21,8 @@ class ProductDiscount extends Model
 
     public function save()
     {
-        $result = false;
-        $products = Product::findAll(['category_id' => $this->category_id]);
-        foreach ($products as $product) {
-            $result = $this->setDiscount($product->id);
-        }
-        return $result;
+
+        return Product::updateAll(['discount' => $this->discount], ['category_id' => $this->category_id]);
 
     }
 

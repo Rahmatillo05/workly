@@ -3,6 +3,7 @@
 namespace app\models;
 
 use yii\base\Model;
+use yii\web\ServerErrorHttpException;
 
 /**
  *
@@ -31,60 +32,49 @@ class ProductCreateModel extends Model
         ];
     }
 
-    /**
-     * @return bool
-     */
-    public function isSave(): bool
-    {
-        if ($product_id = $this->isProductSave()) {
-            if ($this->isProductPriceSave($product_id) && $this->isProductAmountSave($product_id)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
-    /**
-     * @return false|int
-     */
-    private function isProductSave()
+    public function isProductSave(int $amount_id)
     {
         $product = new Product();
         $product->category_id = $this->category_id;
         $product->name = $this->name;
         $product->description = $this->description;
+        $product->amount_id = $amount_id;
+        $product->purchase_price = $this->purchase_price;
+        $product->sell_price = $this->sell_price;
+        $product->discount = $this->discount;
         if ($product->save()) {
-            return $product->id;
+            return $this->isPurchaseHistorySave($product->id);
         }
-        return false;
+        return $product->errors;
     }
 
     /**
      * @param $product_id
      * @return bool
      */
-    private function isProductPriceSave($product_id): bool
+    public function isPurchaseHistorySave($product_id): ?bool
     {
-        $model = new ProductPurchaseHistory();
+        $model = new PurchaseHistory();
         $model->product_id = $product_id;
         $model->purchase_price = $this->purchase_price;
         $model->sell_price = $this->sell_price;
-        $model->discount = $this->discount;
+        $model->amount = $this->has_came_amount;
         return $model->save();
     }
 
     /**
-     * @param $product_id
-     * @return bool
+     * @return int|array
      */
-    private function isProductAmountSave($product_id): bool
+    public function isProductAmountSave(): ?int
     {
-        $model = new ProductAmountHistory();
-        $model->has_came_amount = $this->has_came_amount;
-        $model->sold_amount = 0;
-        $model->remaining_amount = $this->has_came_amount;
-        $model->product_id = $product_id;
-        return $model->save();
+        $model = new ProductAmount();
+        $model->came = $this->has_came_amount;
+        $model->sold = 0;
+        if ($model->save()) {
+            return $model->id;
+        }
+        return $model->errors;
     }
 
     public function getCategoryList()
@@ -92,17 +82,4 @@ class ProductCreateModel extends Model
         return Category::find()->all();
     }
 
-    public function findModel(int $id): ProductCreateModel
-    {
-        $model = new $this;
-        $product = Product::findOne($id);
-        $model->category_id = $product->category_id;
-        $model->name = $product->name;
-        $model->description = $product->description;
-        $model->has_came_amount = $product->productAmountHistories[0]->has_came_amount;
-        $model->discount = $product->productPurchaseHistories[0]->discount;
-        $model->sell_price = $product->productPurchaseHistories[0]->sell_price;
-        $model->purchase_price = $product->productPurchaseHistories[0]->purchase_price;
-        return $model;
-    }
 }

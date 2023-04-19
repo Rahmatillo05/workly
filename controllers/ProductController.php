@@ -67,10 +67,11 @@ class ProductController extends BaseController
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                if ($model->isSave()) {
+                $amount_id = $model->isProductAmountSave();
+                if ($model->isProductSave($amount_id)) {
                     Yii::$app->session->setFlash('success', "Product saved");
                 } else {
-                    Yii::$app->session->setFlash('success', "Error while product saved");
+                    Yii::$app->session->setFlash('error', "Error while product saved");
                 }
                 return $this->redirect(Yii::$app->request->referrer);
             }

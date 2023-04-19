@@ -3,12 +3,14 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "product".
  *
  * @property int $id
  * @property int $category_id
+ * @property int $amount_id
  * @property string $name
  * @property string $description
  * @property float $purchase_price
@@ -17,6 +19,7 @@ use Yii;
  * @property int|null $created_at
  * @property int|null $updated_at
  *
+ * @property ProductAmount $amount
  * @property Category $category
  * @property PurchaseHistory[] $purchaseHistories
  */
@@ -30,17 +33,26 @@ class Product extends \yii\db\ActiveRecord
         return 'product';
     }
 
+    public function behaviors()
+    {
+        return [
+          [
+              'class' => TimestampBehavior::class
+          ]
+        ];
+    }
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['category_id', 'name', 'description', 'purchase_price', 'sell_price', 'discount'], 'required'],
-            [['category_id', 'created_at', 'updated_at'], 'integer'],
+            [['category_id', 'amount_id', 'name', 'description', 'purchase_price', 'sell_price', 'discount'], 'required'],
+            [['category_id', 'amount_id', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
             [['purchase_price', 'sell_price', 'discount'], 'number'],
             [['name'], 'string', 'max' => 255],
+            [['amount_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductAmount::class, 'targetAttribute' => ['amount_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
@@ -53,6 +65,7 @@ class Product extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'category_id' => 'Category ID',
+            'amount_id' => 'Amount ID',
             'name' => 'Name',
             'description' => 'Description',
             'purchase_price' => 'Purchase Price',
@@ -61,6 +74,16 @@ class Product extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * Gets query for [[Amount]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAmount()
+    {
+        return $this->hasOne(ProductAmount::class, ['id' => 'amount_id']);
     }
 
     /**

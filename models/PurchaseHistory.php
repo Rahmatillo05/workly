@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "purchase_history".
@@ -25,7 +26,15 @@ class PurchaseHistory extends \yii\db\ActiveRecord
     {
         return 'purchase_history';
     }
-
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'updatedAtAttribute' => false
+            ]
+        ];
+    }
     /**
      * {@inheritdoc}
      */

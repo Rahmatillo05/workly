@@ -14,15 +14,15 @@ use yii\helpers\Url;
     <span>
         Purchase price:
     <i>
-        <?= $model->productPurchaseHistories[0]->purchase_price ?> $
+        <?= $model->purchase_price ?> $
     </i>
     </span>
     <i>
         Sell price:
-        <?= $model->productPurchaseHistories[0]->sell_price ?> $
+        <?= $model->sell_price ?> $
     </i>
     <i>
         Discount:
-        <?= $model->productPurchaseHistories[0]->discount ?> %
+        <?= $model->discount ?> %
     </i>
 </a>

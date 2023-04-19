@@ -3,7 +3,6 @@
 namespace app\models;
 
 use Yii;
-use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "product".
@@ -12,20 +11,17 @@ use yii\behaviors\TimestampBehavior;
  * @property int $category_id
  * @property string $name
  * @property string $description
+ * @property float $purchase_price
+ * @property float $sell_price
+ * @property float $discount
  * @property int|null $created_at
  * @property int|null $updated_at
  *
  * @property Category $category
- * @property Order[] $orders
- * @property ProductAmountHistory[] $productAmountHistories
- * @property ProductPurchaseHistory[] $productPurchaseHistories
+ * @property PurchaseHistory[] $purchaseHistories
  */
 class Product extends \yii\db\ActiveRecord
 {
-    /**
-     * @var mixed|null
-     */
-
     /**
      * {@inheritdoc}
      */
@@ -34,25 +30,16 @@ class Product extends \yii\db\ActiveRecord
         return 'product';
     }
 
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => TimestampBehavior::class
-            ]
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['category_id', 'name', 'description'], 'required'],
-            [['category_id', 'created_at', 'updated_at'], 'default', 'value' => null],
+            [['category_id', 'name', 'description', 'purchase_price', 'sell_price', 'discount'], 'required'],
             [['category_id', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
+            [['purchase_price', 'sell_price', 'discount'], 'number'],
             [['name'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
         ];
@@ -68,6 +55,9 @@ class Product extends \yii\db\ActiveRecord
             'category_id' => 'Category ID',
             'name' => 'Name',
             'description' => 'Description',
+            'purchase_price' => 'Purchase Price',
+            'sell_price' => 'Sell Price',
+            'discount' => 'Discount',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -84,57 +74,12 @@ class Product extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Orders]].
+     * Gets query for [[PurchaseHistories]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getOrders()
+    public function getPurchaseHistories()
     {
-        return $this->hasMany(Order::class, ['product_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[ProductAmountHistories]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProductAmountHistories()
-    {
-        return ProductAmountHistory::find()->where(['product_id' => $this->id])->orderBy(['id' => SORT_DESC])->all();
-    }
-
-    /**
-     * Gets query for [[ProductPurchaseHistories]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProductPurchaseHistories()
-    {
-        return ProductPurchaseHistory::find()->where(['product_id' => $this->id])->orderBy(['id' => SORT_DESC])->all();
-    }
-
-    public function getCategoryList()
-    {
-        return Category::find()->all();
-    }
-
-    public function getRemainingAmount()
-    {
-        return ProductAmountHistory::find()->where(['product_id' => $this->id])->sum('remaining_amount');
-    }
-
-    public function getOrderAmount()
-    {
-        $orders = Order::findAll(['product_id' => $this->id]);
-        $data = [];
-        foreach ($orders as $order) {
-            $data[] = $order->sell_amount;
-        }
-
-        return json_encode($data);
-    }
-    public function getOrdersAmount()
-    {
-        return Order::find()->where(['product_id' => $this->id])->sum('sell_amount');
+        return $this->hasMany(PurchaseHistory::class, ['product_id' => 'id']);
     }
 }

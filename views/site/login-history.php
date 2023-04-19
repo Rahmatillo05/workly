@@ -5,7 +5,7 @@
  */
 
 use app\components\tools\StatusSetter;
-
+$this->title = "Login history"
 ?>
 <div class="row">
     <div class="col-md-8 offset-md-2">

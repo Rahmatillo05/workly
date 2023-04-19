@@ -56,15 +56,27 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => 'category.name',
                     ],
                     'name',
-                    'purchase_price',
-                    'sell_price',
+                    [
+                        'attribute' => 'purchase_price',
+                        'value' => function(Product $model){
+                            return PriceFormatter::productPurchasePriceDifference($model);
+                        }
+                    ],
+                    [
+                        'attribute' => 'sell_price',
+                        'value' => function(Product $model){
+                            return PriceFormatter::productSellPriceDifference($model);
+                        }
+                    ],
                     [
                         'attribute' => 'discount',
                         'value' => function(Product $model){
-                            return PriceFormatter::calculateDiscountSum($model->sell_price, $model->discount);
+                            $sum = PriceFormatter::calculateDiscountSum($model->sell_price, $model->discount);
+                            return Html::tag('span', "$ $sum( {$model->discount} %)", ['class' => 'badge bg-warning']);
                         },
+                        'format' => 'html'
                     ],
-                    'remainingAmount',
+                    'remaining',
                     'created_at:date',
                     [
                         'class' => ActionColumn::class,

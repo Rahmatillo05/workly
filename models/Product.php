@@ -107,7 +107,7 @@ class Product extends \yii\db\ActiveRecord
         return $this->hasMany(PurchaseHistory::class, ['product_id' => 'id']);
     }
 
-    public function getRemainingAmount(): int
+    public function getRemaining(): int
     {
         $amount = $this->amount;
 

@@ -20,7 +20,7 @@ class m230419_004233_create_product_table extends Migration
             'description' => $this->text()->notNull(),
             'purchase_price' => $this->money(65, 2)->notNull(),
             'sell_price' => $this->money(65, 2)->notNull(),
-            'discount' => $this->money(65, 2)->notNull(),
+            'discount' => $this->money(65, 1)->notNull(),
             'created_at' => $this->integer(),
             'updated_at' => $this->integer()
         ]);

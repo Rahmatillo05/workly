@@ -55,4 +55,6 @@ class ProductAmount extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Product::class, ['amount_id' => 'id']);
     }
+
+
 }

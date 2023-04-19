@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => CheckboxColumn::class,
                         'cssClass' => 'form-check-input',
                         'checkboxOptions' => function (Product $model, $key, $index, $column) {
-                            return ['value' => $model->productPurchaseHistories[0]->id];
+                            return ['value' => $model->id];
                         }
                     ],
                     'id',
@@ -56,30 +56,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => 'category.name',
                     ],
                     'name',
+                    'purchase_price',
+                    'sell_price',
                     [
-                        'attribute' => 'last_purchase_price',
-                        'label' => 'Purchase price',
-                        'value' => function (Product $model) {
-                            return PriceFormatter::productPriceDifference($model);
+                        'attribute' => 'discount',
+                        'value' => function(Product $model){
+                            return PriceFormatter::calculateDiscountSum($model->sell_price, $model->discount);
                         },
-                        'format' => 'html'
                     ],
-                    [
-                        'attribute' => 'last_sell_price',
-                        'value' => function (Product $model) {
-                            return round($model->productPurchaseHistories[0]->sell_price, 1) . " $";
-                        },
-                        'label' => 'Sell price'
-                    ],
-                    [
-                        'attribute' => 'last_discount',
-                        'value' => function (Product $model) {
-                            $discount_price = PriceFormatter::calculateDiscountSum($model->productPurchaseHistories[0]->sell_price, $model->productPurchaseHistories[0]->discount);
-                            return Html::tag('span', "{$discount_price} $ ({$model->productPurchaseHistories[0]->discount}%)", ['class' => 'badge bg-label-info']);
-                        },
-                        'label' => 'Discount price',
-                        'format' => 'html'
-                    ],
+                    'remainingAmount',
                     'created_at:date',
                     [
                         'class' => ActionColumn::class,

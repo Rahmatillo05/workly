@@ -36,11 +36,12 @@ class Product extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-          [
-              'class' => TimestampBehavior::class
-          ]
+            [
+                'class' => TimestampBehavior::class
+            ]
         ];
     }
+
     /**
      * {@inheritdoc}
      */
@@ -64,12 +65,12 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'category_id' => 'Category ID',
-            'amount_id' => 'Amount ID',
+            'category_id' => 'Category',
+            'amount_id' => 'Amount',
             'name' => 'Name',
             'description' => 'Description',
-            'purchase_price' => 'Purchase Price',
-            'sell_price' => 'Sell Price',
+            'purchase_price' => 'Purchase Price $',
+            'sell_price' => 'Sell Price $',
             'discount' => 'Discount',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -104,5 +105,12 @@ class Product extends \yii\db\ActiveRecord
     public function getPurchaseHistories()
     {
         return $this->hasMany(PurchaseHistory::class, ['product_id' => 'id']);
+    }
+
+    public function getRemainingAmount(): int
+    {
+        $amount = $this->amount;
+
+        return $amount->came - $amount->sold;
     }
 }

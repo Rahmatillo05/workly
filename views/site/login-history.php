@@ -30,7 +30,7 @@ use app\components\tools\StatusSetter;
                             <td><?= $item->location ?></td>
                             <td><?= $item->ip ?></td>
                             <td><?= StatusSetter::statusSet($item->status) ?></td>
-                            <td><?= Yii::$app->formatter->asRelativeTime($item->created_at) ?></td>
+                            <td><?= date('d-M-Y H:i', $item->created_at)?></td>
                         </tr>
                     <?php endforeach; ?>
                 </table>

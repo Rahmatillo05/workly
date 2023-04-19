@@ -133,20 +133,13 @@ class ProductController extends BaseController
         if ($this->request->isPost) {
             $data = Yii::$app->request->post();
             $products = [];
-            $ids = $data['ids'];
             foreach ($data as $key => $value) {
                 if (strpos($key, 'Product_') === 0) {
                     $products[] = $value;
                 }
             }
-            VarDumper::dump($products, 10, true);
-            VarDumper::dump($ids, 10, true);
-            Product::updateAll($products, ['in', 'id', $ids]);
-            return false;
-
-            if ((new ProductPurchaseHistory())->multipleUpdated($products)) {
-                Yii::$app->session->setFlash('success', 'Selected rows updated successfully!');
-            }
+            Product::multipleUpdate($products);
+            Yii::$app->session->setFlash('success', 'Selected rows updated successfully!');
         }
         return $this->redirect(['index']);
     }

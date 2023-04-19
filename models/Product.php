@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\StaleObjectException;
 
 /**
  * This is the model class for table "product".
@@ -125,4 +126,17 @@ class Product extends \yii\db\ActiveRecord
         $amount->came += $newAmount;
         return $amount->save();
     }
+
+
+    public static function multipleUpdate(array $products)
+    {
+        foreach ($products as $product) {
+            $item = Product::findOne($product['id']);
+            $item->purchase_price = $product['purchase_price'];
+            $item->sell_price = $product['sell_price'];
+            $item->discount = $product['discount'];
+            $item->save();
+        }
+    }
+
 }

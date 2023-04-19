@@ -5,7 +5,7 @@ use yii\helpers\Url;
 use kartik\form\ActiveForm;
 
 /**
- * @var \common\models\Product $products
+ * @var \app\models\Product $products
  */
 ?>
 
@@ -20,16 +20,16 @@ use kartik\form\ActiveForm;
                     <thead>
                         <tr>
                             <th>Product Name</th>
-                            <th>Purchase Price</th>
-                            <th>Sell Price</th>
-                            <th>Discount</th>
+                            <th>Purchase Price $</th>
+                            <th>Sell Price $</th>
+                            <th>Discount %</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if ($products) : foreach ($products as $product) : ?>
                                 <tr>
-                                    <td><?= $product->product->name ?></td>
-                                    <td class="d-none"><?= $form->field($product, 'id')->hiddenInput(['name' => "Product_{$product->id}[id]"])->label(false) ?></td>
+                                    <td><?= $product->name ?></td>
+                                    <td class="d-none"><?= $form->field($product, 'id')->hiddenInput(['name' => "ids[]"])->label(false) ?></td>
                                     <td><?= $form->field($product, 'purchase_price')->textInput(['name' => "Product_{$product->id}[purchase_price] "])->label(false) ?></td>
                                     <td><?= $form->field($product, 'sell_price')->textInput(['name' => "Product_{$product->id}[sell_price] "])->label(false) ?></td>
                                     <td><?= $form->field($product, 'discount')->textInput(['name' => "Product_{$product->id}[discount] "])->label(false) ?></td>

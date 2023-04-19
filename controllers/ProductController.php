@@ -119,7 +119,7 @@ class ProductController extends BaseController
     {
         if ($this->request->isPost) {
             if ($product_ids = $this->request->post('selection')) {
-                $products = ProductPurchaseHistory::findAll($product_ids);
+                $products = Product::findAll($product_ids);
                 return $this->render('multiple-update', compact('products'));
             } else {
                 Yii::$app->session->setFlash('error', 'No row selected');
@@ -133,11 +133,16 @@ class ProductController extends BaseController
         if ($this->request->isPost) {
             $data = Yii::$app->request->post();
             $products = [];
+            $ids = $data['ids'];
             foreach ($data as $key => $value) {
                 if (strpos($key, 'Product_') === 0) {
-                    $products[$key] = $value;
+                    $products[] = $value;
                 }
             }
+            VarDumper::dump($products, 10, true);
+            VarDumper::dump($ids, 10, true);
+            Product::updateAll($products, ['in', 'id', $ids]);
+            return false;
 
             if ((new ProductPurchaseHistory())->multipleUpdated($products)) {
                 Yii::$app->session->setFlash('success', 'Selected rows updated successfully!');

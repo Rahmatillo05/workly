@@ -3,6 +3,8 @@
 namespace app\components\tools;
 
 use app\components\widgets\Chart;
+use app\models\Category;
+use app\models\ProductAmount;
 use app\models\PurchaseHistory;
 use yii\base\Widget;
 
@@ -25,6 +27,27 @@ class ChartDataProvider extends Widget
         }
         $data['series'] = json_encode([$series]);
         $data['categories'] = json_encode($categories);
+        return $data;
+    }
+
+    public static function productAmountByCategory()
+    {
+        $data = [];
+        $data['all_amount'] = ProductAmount::remaining();
+        $categories = Category::find()->all();
+        /** @var Category $category */
+        $series = [];
+        $labels = [];
+        foreach ($categories as $category) {
+            $product_amount = 0;
+            foreach ($category->products as $product) {
+                 $product_amount += $product->remaining;
+            }
+            $series[] = $product_amount;
+            $labels[] = $category->name;
+        }
+        $data['series'] = json_encode($series);
+        $data['labels'] = json_encode($labels);
         return $data;
     }
 

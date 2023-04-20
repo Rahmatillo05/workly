@@ -56,6 +56,11 @@ class ProductAmount extends \yii\db\ActiveRecord
         return $this->hasMany(Product::class, ['amount_id' => 'id']);
     }
 
+    public static function remaining()
+    {
+        $came = self::find()->sum('came');
+        $sold = self::find()->sum('sold');
 
-
+        return $came - $sold;
+    }
 }

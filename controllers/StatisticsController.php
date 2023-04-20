@@ -4,12 +4,16 @@ namespace app\controllers;
 
 use app\models\Statistics;
 use Yii;
+use yii\data\ActiveDataProvider;
 
 class StatisticsController extends BaseController
 {
     public function actionIndex()
     {
-        return $this->render('index');
+        $statistics = new ActiveDataProvider([
+            'query'  => Statistics::find()->orderBy(['id'=>SORT_DESC]),
+        ]);
+        return $this->render('index', compact('statistics'));
     }
 
     public function actionCreate()

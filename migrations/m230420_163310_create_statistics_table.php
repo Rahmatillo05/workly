@@ -19,6 +19,7 @@ class m230420_163310_create_statistics_table extends Migration
             'income_amount' => $this->integer()->notNull(),
             'sales_amount' => $this->integer()->notNull(),
             'discount_price' => $this->money(65, 2),
+            'net_profit' => $this->money(65, 2)->notNull(),
             'created_at' => $this->integer()
         ]);
     }

@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\widgets\PriceFormatter;
 use app\models\LoginHistory;
 use app\models\Order;
+use app\models\Product;
 use Yii;
 use yii\web\Response;
 use app\models\LoginForm;
@@ -21,8 +22,10 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
+        $today = strtotime("today");
         $order = new Order();
-        return $this->render('index', compact('order'));
+        $orders = Order::find()->where(['between', 'created_at', $today, $today + 86400])->all();
+        return $this->render('index', compact('order', 'orders'));
     }
 
     public function actionOrder()
@@ -31,20 +34,21 @@ class SiteController extends BaseController
         if ($this->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             $product_id = $this->request->post('product_id');
-            $product = ProductPurchaseHistory::find()->where(['product_id' => $product_id])->orderBy(['id' => SORT_DESC])->one();
+            $product = Product::find()->where(['id' => $product_id])->orderBy(['id' => SORT_DESC])->one();
             $discount = PriceFormatter::calculateDiscountSum($product->sell_price, $product->discount);
             return [
-                'sell_price' => $product->sell_price,
+                'sell_price' => round($product->sell_price, 1),
                 'discount' => $discount,
                 'discount_per' => $product->discount
             ];
         }
-        if ($this->request->isPost){
-            if ($model->load($this->request->post())){
-                if ($model->isSave()){
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                $result = $model->isSave();
+                if (!is_array($result)) {
                     Yii::$app->session->setFlash('success', "Order saved");
                     $this->redirect(['index']);
-                } else{
+                } else {
                     Yii::$app->session->setFlash('error', "Order not saved");
                     $this->redirect(['index']);
                 }

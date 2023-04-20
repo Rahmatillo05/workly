@@ -20,29 +20,39 @@ use yii\helpers\ArrayHelper;
         ],
         'type' => ActiveForm::TYPE_VERTICAL
     ]); ?>
-    <?= $form->field($model, 'category_id')->widget(Select2::class, [
-        'data' => ArrayHelper::map($model->productList, 'id', 'name'),
-        'options' => [
-            'placeholder' => 'Select a category...'
-        ]
-    ]) ?>
     <?= $form->field($model, 'product_id')->widget(Select2::class, [
         'data' => ArrayHelper::map($model->productList, 'id', 'name', 'category.name'),
         'options' => [
             'placeholder' => 'Select a product...'
         ]
     ]) ?>
-    <label class="form-group">
-        Min sell price with discount $
-        <input type="text" id="mix-price" readonly class="form-control">
-    </label>
-    <p id="discount"></p>
-    <?= $form->field($model, 'amount') ?>
-    <label class="form-group">
-        All sum $
-        <input type="text" id="all_summ" readonly class="form-control">
-    </label>
-    <?= $form->field($model, 'sell_price') ?>
+
+    <div class="row">
+        <div class="col-12 mb-3">
+            <b id="discount_percent"></b>
+        </div>
+        <div class="col-6 mb-2">
+            <label>
+                Each product price $
+                <input type="text" class="form-control" id="each_price" readonly>
+            </label>
+        </div>
+        <div class="col-6 mb-2">
+            <label>
+                Product price with discount
+                <input type="text" class="form-control" id="discount_price" readonly>
+            </label>
+        </div>
+        <div class="col-12">
+            <?= $form->field($model, 'amount') ?>
+        </div>
+        <div class="col-6">
+            <?= $form->field($model, 'sell_price')->textInput(['readonly' => 'readonly']) ?>
+        </div>
+        <div class="col-6">
+            <?= $form->field($model, 'discount_price')->textInput(['readonly' => 'readonly']) ?>
+        </div>
+    </div>
 
     <div class="form-group ">
         <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'id' => 'order-button']) ?>

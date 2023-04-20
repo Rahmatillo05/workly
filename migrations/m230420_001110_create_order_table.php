@@ -18,6 +18,7 @@ class m230420_001110_create_order_table extends Migration
             'product_id' => $this->integer()->notNull(),
             'amount' => $this->integer()->notNull(),
             'sell_price' => $this->money(65, 2)->notNull(),
+            'discount_price' => $this->money(65, 2)->notNull(),
             'created_at' => $this->integer()->notNull()
         ]);
         $this->addForeignKey('fk-to-category-from-orders', 'order', 'category_id', 'category', 'id', 'CASCADE');

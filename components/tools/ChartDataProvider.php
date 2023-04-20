@@ -2,8 +2,9 @@
 
 namespace app\components\tools;
 
-use app\components\widgets\Chart;
+use app\components\widgets\NumberFormatter;
 use app\models\Category;
+use app\models\Order;
 use app\models\ProductAmount;
 use app\models\PurchaseHistory;
 use yii\base\Widget;
@@ -41,7 +42,7 @@ class ChartDataProvider extends Widget
         foreach ($categories as $category) {
             $product_amount = 0;
             foreach ($category->products as $product) {
-                 $product_amount += $product->remaining;
+                $product_amount += $product->remaining;
             }
             $series[] = $product_amount;
             $labels[] = $category->name;
@@ -51,4 +52,16 @@ class ChartDataProvider extends Widget
         return $data;
     }
 
+    public static function dailyStatistics(): array
+    {
+        $data = [];
+        $today = strtotime("today");
+        $profit = PurchaseHistory::find()->where(['between', 'created_at', $today, time()])->sum('purchase_price');
+        $sales = Order::find()->where(['between', 'created_at', $today, time()])->sum('discount_price');
+        $order_net_price = Order::find()->where(['between', 'created_at', $today, time()])->sum('sell_price');
+        $data['profit'] = NumberFormatter::letterFormat($profit);
+        $data['sales'] = NumberFormatter::letterFormat($sales);
+        $data['net_price'] = NumberFormatter::letterFormat($order_net_price);
+        return $data;
+    }
 }

@@ -32,7 +32,7 @@ class NumberFormatter extends Widget
                 $number /= 1e3;
                 $suffix = 'K';
             }
-            return number_format(round($number, 4), 1) . $suffix;
+            return number_format(round($number, 2), 2) . $suffix;
         } else {
             return 0;
         }

@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 
 
 /** @var yii\web\View $this */
-/** @var common\models\Selling $model */
+/** @var \app\models\Order $model */
 /** @var ActiveForm $form */
 ?>
 <div class="site-_order_form">
@@ -17,13 +17,19 @@ use yii\helpers\ArrayHelper;
         'action' => Url::toRoute(['site/order']),
         'options' => [
             'id' => 'sell-form'
-        ]
+        ],
+        'type' => ActiveForm::TYPE_VERTICAL
     ]); ?>
-
+    <?= $form->field($model, 'category_id')->widget(Select2::class, [
+        'data' => ArrayHelper::map($model->productList, 'id', 'name'),
+        'options' => [
+            'placeholder' => 'Select a category...'
+        ]
+    ]) ?>
     <?= $form->field($model, 'product_id')->widget(Select2::class, [
         'data' => ArrayHelper::map($model->productList, 'id', 'name', 'category.name'),
         'options' => [
-            'placeholder' => 'Select a value...'
+            'placeholder' => 'Select a product...'
         ]
     ]) ?>
     <label class="form-group">
@@ -31,7 +37,7 @@ use yii\helpers\ArrayHelper;
         <input type="text" id="mix-price" readonly class="form-control">
     </label>
     <p id="discount"></p>
-    <?= $form->field($model, 'sell_amount') ?>
+    <?= $form->field($model, 'amount') ?>
     <label class="form-group">
         All sum $
         <input type="text" id="all_summ" readonly class="form-control">

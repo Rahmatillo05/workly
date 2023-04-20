@@ -37,9 +37,19 @@ $(function () {
     }
 
 
-    /**** Order chart **/
+    const settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://type.fit/api/quotes",
+        "method": "GET"
+    }
+    const motivText = $('#motiv-text');
+    const motivAuthor = $('#motiv-author');
+    let random = parseInt(Math.random() * 1000);
 
-
-
-    /****** end order chart ***/
+    $.ajax(settings).done(function (response) {
+        const data = JSON.parse(response);
+        motivText.text(data[random].text)
+        motivAuthor.text(data[random].author);
+    });
 });

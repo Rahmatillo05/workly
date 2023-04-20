@@ -5,10 +5,6 @@ namespace app\controllers;
 use app\components\widgets\PriceFormatter;
 use app\models\LoginHistory;
 use app\models\Order;
-use app\models\OrderSorting;
-use app\models\ProductAmountHistory;
-use app\models\ProductPurchaseHistory;
-use nyx\components\http\userAgent\UserAgentParser;
 use Yii;
 use yii\web\Response;
 use app\models\LoginForm;
@@ -25,7 +21,8 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $order = new Order();
+        return $this->render('index', compact('order'));
     }
 
     public function actionOrder()

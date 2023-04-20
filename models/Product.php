@@ -22,6 +22,7 @@ use yii\db\StaleObjectException;
  *
  * @property ProductAmount $amount
  * @property Category $category
+ * @property Order $orders
  * @property PurchaseHistory[] $purchaseHistories
  */
 class Product extends \yii\db\ActiveRecord
@@ -107,7 +108,15 @@ class Product extends \yii\db\ActiveRecord
     {
         return PurchaseHistory::find()->where(['product_id' => $this->id])->orderBy(['id' => SORT_DESC])->limit(2)->all();
     }
-
+    /**
+     * Gets query for [[Order]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrders()
+    {
+        return $this->hasMany(Order::class, ['product_id' => 'id']);
+    }
     public function getCategoryList()
     {
         return Category::find()->orderBy(['id' => SORT_DESC])->all();
@@ -150,5 +159,6 @@ class Product extends \yii\db\ActiveRecord
             $item->save();
         }
     }
+
 
 }

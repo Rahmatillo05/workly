@@ -94,6 +94,25 @@ $this->params['breadcrumbs'][] = $this->title;
                                     $url, [
                                         'title' => "Add Amound"
                                     ]);
+                            },
+                            'view' => function ($url, $model) {
+                                return Html::a('<i class="btn btn-sm btn-info bx bx-show"></i>',
+                                    $url, [
+                                        'title' => "View"
+                                    ]);
+                            },
+                            'update' => function ($url, $model) {
+                                return Html::a('<i class="btn btn-sm btn-primary bx bx-edit"></i>',
+                                    $url, [
+                                        'title' => "Update"
+                                    ]);
+                            },
+                            'delete' => function ($url, $model) {
+                                return Html::a('<i class="btn btn-sm btn-danger bx bx-trash"></i>',
+                                    $url, [
+                                        'title' => "Delete",
+                                        'data-method' => 'post'
+                                    ]);
                             }
                         ]
                     ],

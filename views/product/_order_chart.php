@@ -1,6 +1,8 @@
 <?php
-/** @var yii\web\View $this */
-/** @var app\models\Product $orders */
+
+use app\components\tools\ChartDataProvider;
+
+$data = ChartDataProvider::productOrderAmount($product_id);
 ?>
 <div class="card">
     <div class="card-body">
@@ -10,7 +12,7 @@
                     <span class="badge bg-label-warning rounded-pill">This month</span>
                 </div>
                 <div class="mt-sm-auto">
-                    <h3 class="mb-0"><?//= $orders->getOrdersAmount() ?></h3>
+                    <h3 class="mb-0"><?= $data['all_amount'] ?></h3>
                 </div>
             </div>
             <div id="orderStatChart"></div>
@@ -63,7 +65,7 @@ const profileReportChartEl = document.querySelector('#orderStatChart'),
             series: [
                 {
                     name: "Amount",
-                    data: []
+                    data: {$data['amount']}
                 }
             ],
             xaxis: {
@@ -87,6 +89,6 @@ const profileReportChartEl = document.querySelector('#orderStatChart'),
         profileReportChart.render();
     }
 JS;
-//$this->registerJs($js);
+$this->registerJs($js);
 ?>
 

@@ -64,4 +64,19 @@ class ChartDataProvider extends Widget
         $data['net_price'] = NumberFormatter::letterFormat($order_net_price);
         return $data;
     }
+
+    public static function productOrderAmount(int $product_id): array
+    {
+        $data = [];
+        $orders = Order::find()->where(['product_id' => $product_id]);
+        $data['all_amount'] = $orders->sum('amount') ?? 0;
+        $orders = $orders->all();
+        $amount = [];
+        foreach ($orders as $order) {
+            $amount[] = $order->amount;
+        }
+        $data['amount'] = json_encode($amount);
+        return $data;
+
+    }
 }

@@ -1,13 +1,11 @@
 <?php
 
 use app\components\tools\ChartDataProvider;
-use app\components\widgets\Chart;
 use app\models\PurchaseHistory;
 use yii\helpers\Html;
 use app\models\Product;
 use yii\widgets\DetailView;
 use app\components\widgets\PriceFormatter;
-use yii\widgets\ListView;
 
 /** @var yii\web\View $this */
 /** @var app\models\Product $model */
@@ -17,6 +15,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 $data = ChartDataProvider::productPurchaseHistory($model->id, $model->name);
+
 ?>
 <div class="row">
     <div class="col-6">
@@ -95,11 +94,11 @@ $data = ChartDataProvider::productPurchaseHistory($model->id, $model->name);
                 <div class="card">
                     <div class="card-header">
                         <h3 class="fw-semibold">Order Statistics</h3>
-                        <?= $this->render('_order_chart', ['orders' => $model]) ?>
+                        <?= $this->render('_order_chart', ['product_id' => $model->id]) ?>
                     </div>
                     <div class="card-body">
                         <div class="accordion mt-3" id="accordionExample">
-                            <? //= $this->render('_order_view', ['orders' => $model->orders]) ?>
+                            <?= $this->render('_order_view', ['orders' => $model->orders]) ?>
                         </div>
                     </div>
                 </div>

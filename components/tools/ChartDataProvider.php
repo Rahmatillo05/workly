@@ -56,7 +56,7 @@ class ChartDataProvider extends Widget
     {
         $data = [];
         $today = strtotime("today");
-        $profit = PurchaseHistory::find()->where(['between', 'created_at', $today, time()])->sum('purchase_price');
+        $profit = PurchaseHistory::find()->select("SUM(purchase_price * amount)")->where(['between', 'created_at', $today, time()])->scalar();
         $sales = Order::find()->where(['between', 'created_at', $today, time()])->sum('discount_price');
         $order_net_price = Order::find()->where(['between', 'created_at', $today, time()])->sum('sell_price');
         $data['profit'] = NumberFormatter::letterFormat($profit);

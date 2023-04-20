@@ -131,7 +131,7 @@ class Product extends \yii\db\ActiveRecord
 
     public function getTotalSpentSum()
     {
-        $sum = PurchaseHistory::find()->where(['product_id' => $this->id])->sum('purchase_price');
+        $sum = PurchaseHistory::find()->select("SUM(purchase_price * amount)")->where(['product_id' => $this->id])->scalar();
         return round($sum, 1);
     }
 

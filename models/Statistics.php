@@ -15,6 +15,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int $sales_amount
  * @property float|null $discount_price
  * @property float $net_profit
+ * @property float $product
  * @property int|null $created_at
  */
 class Statistics extends \yii\db\ActiveRecord
@@ -43,7 +44,7 @@ class Statistics extends \yii\db\ActiveRecord
     {
         return [
             [['income', 'sales', 'income_amount', 'sales_amount', 'net_profit'], 'required'],
-            [['income', 'sales', 'discount_price', 'net_profit'], 'number'],
+            [['income', 'sales', 'discount_price', 'net_profit', 'product'], 'number'],
             [['income_amount', 'sales_amount', 'created_at'], 'integer'],
         ];
     }
@@ -72,7 +73,7 @@ class Statistics extends \yii\db\ActiveRecord
         $orders = Order::find()->where(['between', 'created_at', $today, $today + 86400]);
         $newStat = new $this;
         /* ---- Income ---- */
-        $newStat->income = $purchase->sum('purchase_price') ?? 0;
+        $newStat->income = $purchase->select("SUM(purchase_price * amount)")->scalar() ?? 0;
         $newStat->income_amount = $purchase->sum('amount') ?? 0;
         /* ---- Income ---- */
 
@@ -87,6 +88,7 @@ class Statistics extends \yii\db\ActiveRecord
         foreach ($orders->all() as $value){
             $product_sum += $value->product->purchase_price * $value->amount;
         }
+        $newStat->product = $product_sum;
         $discount_sum = $newStat->sales - $newStat->discount_price;
         $newStat->net_profit = $newStat->sales - ($product_sum + $discount_sum);
         /*--- Net profit ---*/

@@ -19,7 +19,7 @@ class StatisticsController extends BaseController
         return $this->render('index', compact('statistics'));
     }
 
-    public function actionCreate()
+    public function actionStatCreate()
     {
         $model = new Statistics();
         if ($model->isSave()) {

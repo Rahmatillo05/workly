@@ -62,7 +62,7 @@ class Statistics extends \yii\db\ActiveRecord
             'sales_amount' => 'Sales Amount',
             'discount_price' => 'Discount Price',
             'net_profit' => 'Net Profit',
-            'created_at' => 'Created At',
+            'created_at' => 'Date',
         ];
     }
 

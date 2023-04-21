@@ -8,6 +8,7 @@ use app\models\Order;
 use app\models\Product;
 use app\models\ProductAmount;
 use app\models\PurchaseHistory;
+use app\models\Statistics;
 use yii\base\Widget;
 
 class ChartDataProvider extends Widget
@@ -90,7 +91,7 @@ class ChartDataProvider extends Widget
         $order_amount = [];
         $order_net_price = [];
         $order_with_discount = [];
-        foreach ($products as $product){
+        foreach ($products as $product) {
             $product_name[] = $product->name;
             $product_amount[] = $product->remaining;
             $order_amount[] = $product->amount->sold;
@@ -110,8 +111,26 @@ class ChartDataProvider extends Widget
         return $data;
     }
 
-    public static function allOrderAmount()
+    public static function statisticsData()
     {
         $data = [];
+
+        $statistics = Statistics::find()->all();
+        $net_profit = [];
+        $sales = [];
+        $amount = [];
+        $date = [];
+        foreach ($statistics as $statistic){
+            /** @var Statistics $statistic */
+            $net_profit[] = $statistic->net_profit;
+            $sales[] = $statistic->sales;
+            $amount[] = $statistic->product;
+            $date[] = date('d-m-Y', $statistic->created_at);
+        }
+        $data['net_profit'] = json_encode($net_profit);
+        $data['sales'] = json_encode($sales);
+        $data['product_sum'] = json_encode($amount);
+        $data['date'] = json_encode($date);
+        return $data;
     }
 }

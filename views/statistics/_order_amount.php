@@ -21,7 +21,7 @@ $js = <<<JS
           series: {$data['order_amount']},
           chart: {
             type: 'donut',
-            height: 300,
+            height: 350,
             width: '100%'
         },
         labels:{$data['name']},

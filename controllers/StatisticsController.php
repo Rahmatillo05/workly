@@ -12,6 +12,9 @@ class StatisticsController extends BaseController
     {
         $statistics = new ActiveDataProvider([
             'query'  => Statistics::find()->orderBy(['id'=>SORT_DESC]),
+            'pagination' => [
+                'pageSize' => 20
+            ]
         ]);
         return $this->render('index', compact('statistics'));
     }

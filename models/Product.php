@@ -22,7 +22,8 @@ use yii\db\StaleObjectException;
  *
  * @property ProductAmount $amount
  * @property Category $category
- * @property Order $orders
+ * @property array $price
+ * @property Order[] $orders
  * @property PurchaseHistory[] $purchaseHistories
  */
 class Product extends \yii\db\ActiveRecord
@@ -135,6 +136,12 @@ class Product extends \yii\db\ActiveRecord
         return round($sum, 1);
     }
 
+    public function getPrice(): array
+    {
+        $data['net_price'] = Order::find()->where(['product_id' => $this->id])->sum('sell_price');
+        $data['with_discount'] = Order::find()->where(['product_id' => $this->id])->sum('discount_price');
+        return $data;
+    }
     public function getTotalRemainingSum()
     {
         $sum = $this->getRemaining() * $this->sell_price;

@@ -5,6 +5,7 @@ namespace app\components\tools;
 use app\components\widgets\NumberFormatter;
 use app\models\Category;
 use app\models\Order;
+use app\models\Product;
 use app\models\ProductAmount;
 use app\models\PurchaseHistory;
 use yii\base\Widget;
@@ -77,6 +78,40 @@ class ChartDataProvider extends Widget
         }
         $data['amount'] = json_encode($amount);
         return $data;
+    }
 
+    public static function productAllAmount(): array
+    {
+        $data = [];
+        $products = Product::find()->all();
+        $product_amount = [];
+        $product_name = [];
+        /** @var Product $product */
+        $order_amount = [];
+        $order_net_price = [];
+        $order_with_discount = [];
+        foreach ($products as $product){
+            $product_name[] = $product->name;
+            $product_amount[] = $product->remaining;
+            $order_amount[] = $product->amount->sold;
+            $order_net_price[] = round($product->price['net_price'], 1);
+            $order_with_discount[] = round($product->price['with_discount'], 1);
+        }
+
+        $data['amount'] = json_encode($product_amount);
+        $data['name'] = json_encode($product_name);
+        $data['all_order_amount'] = array_sum($order_amount);
+        $data['order_amount'] = json_encode($order_amount);
+
+        $data['order_with_discount_all'] = array_sum($order_with_discount);
+        $data['order_net_price_all'] = array_sum($order_net_price);
+        $data['order_net_price'] = json_encode($order_net_price);
+        $data['order_with_discount'] = json_encode($order_with_discount);
+        return $data;
+    }
+
+    public static function allOrderAmount()
+    {
+        $data = [];
     }
 }

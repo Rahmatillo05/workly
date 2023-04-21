@@ -32,7 +32,8 @@ class BaseController extends Controller
                             'logout',
                             'add-amount',
                             'order',
-                            'login-history'
+                            'login-history',
+                            'sorting'
                         ],
                         'allow' => true,
                         'roles' => ['@'],

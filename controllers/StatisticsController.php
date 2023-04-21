@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\OrderSorting;
 use app\models\Statistics;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\helpers\VarDumper;
 
 class StatisticsController extends BaseController
 {
@@ -16,6 +18,10 @@ class StatisticsController extends BaseController
                 'pageSize' => 20
             ]
         ]);
+//        $order = new OrderSorting();
+//        $order->start_time = date('01-m-Y');
+//
+//        $order->end_time = date('d-m-Y', strtotime('yesterday'));
         return $this->render('index', compact('statistics'));
     }
 
@@ -28,5 +34,10 @@ class StatisticsController extends BaseController
         }
         Yii::$app->session->setFlash('error', "Staistika qiymatlari olinmadi");
         return $this->redirect(['index']);
+    }
+
+    public function actionSorting()
+    {
+        return $this->render('sorting');
     }
 }

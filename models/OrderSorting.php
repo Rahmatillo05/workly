@@ -4,6 +4,7 @@ namespace app\models;
 
 use yii\base\Model;
 
+
 class OrderSorting extends Model
 {
     public $start_time;
@@ -12,8 +13,9 @@ class OrderSorting extends Model
     public function rules()
     {
         return [
-            [['start_time', 'end_time'], 'required'],
-            [['end_time'], 'default', 'value' => date('dd-mm-yyyy')]
+            [['start_time'], 'required'],
+            [['end_time'], 'default', 'value' => date('d-m-Y')],
+            [['end_time'], 'default', 'value' => date('d-m-Y')]
         ];
     }
 

@@ -12,16 +12,22 @@ class StatisticsController extends BaseController
 {
     public function actionIndex()
     {
+        $query = Statistics::find()->orderBy(['id' => SORT_DESC]);
+        $request = $this->request;
+        if ($sorting_date = $request->get('OrderSorting')) {
+            $query->where([
+                'between',
+                'created_at',
+                strtotime($sorting_date['start_time']),
+                strtotime($sorting_date['end_time'])
+            ]);
+        }
         $statistics = new ActiveDataProvider([
-            'query'  => Statistics::find()->orderBy(['id'=>SORT_DESC]),
+            'query' => $query,
             'pagination' => [
                 'pageSize' => 20
             ]
         ]);
-//        $order = new OrderSorting();
-//        $order->start_time = date('01-m-Y');
-//
-//        $order->end_time = date('d-m-Y', strtotime('yesterday'));
         return $this->render('index', compact('statistics'));
     }
 

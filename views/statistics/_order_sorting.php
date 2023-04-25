@@ -4,6 +4,10 @@ use kartik\date\DatePicker;
 use kartik\form\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
+$sorting_date = Yii::$app->request->get('OrderSorting') ?? [
+    'start_time' => date('d-m-Y', Yii::$app->user->identity->created_at),
+    'end_time' => date('d-m-Y', strtotime('yesterday'))
+];
 
 ?>
 <div class="card">
@@ -12,13 +16,15 @@ use yii\helpers\Url;
         <?php $form = ActiveForm::begin([
             'method' => 'get',
             'type' => ActiveForm::TYPE_FLOATING,
-            'action' => Url::toRoute(['statistics/sorting'])
         ]); ?>
         <div class="row">
 
             <div class="col-md-6">
                 <?= $form->field($model, 'start_time')->widget(DatePicker::class, [
-                    'options' => ['placeholder' => 'Start time...'],
+                    'options' => [
+                        'placeholder' => 'Start time...',
+                        'value'  => $sorting_date['start_time']
+                    ],
                     'pluginOptions' => [
                         'format' => 'dd-mm-yyyy',
                         'todayHighlight' => true,
@@ -30,7 +36,10 @@ use yii\helpers\Url;
             </div>
             <div class="col-md-6">
                 <?= $form->field($model, 'end_time')->widget(DatePicker::class, [
-                    'options' => ['placeholder' => 'End time...'],
+                    'options' => [
+                        'placeholder' => 'End time...',
+                        'value' => $sorting_date['end_time']
+                    ],
                     'pluginOptions' => [
                         'format' => 'dd-mm-yyyy',
                         'todayHighlight' => true,
@@ -41,8 +50,9 @@ use yii\helpers\Url;
                 ])->label(false); ?>
             </div>
             <div class="col-12">
-                <div class="form-group d-flex justify-content-between align-items-center">
+                <div class="form-group">
                     <?= Html::submitButton('Sorting', ['class' => 'btn btn-primary']); ?>
+                    <?= Html::a('All', ['index'], ['class' => 'btn btn-outline-info']) ?>
                 </div>
                 <?php
                 ActiveForm::end();

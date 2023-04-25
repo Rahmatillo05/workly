@@ -2,6 +2,7 @@
 
 
 /** @var yii\web\View $this */
+
 /** @var yii\data\ActiveDataProvider $statistics */
 
 use app\models\OrderSorting;
@@ -10,6 +11,10 @@ $this->title = 'Statistics';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
+
+    <div class="col-12 my-3">
+        <?= $this->render('_order_sorting', ['model' => new OrderSorting()]) ?>
+    </div>
     <div class="col-12 my-3">
         <?= $this->render('_statistics_table', compact('statistics')) ?>
     </div>
@@ -20,10 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $this->render('_product_amount') ?>
     </div>
     <div class="col-md-4">
-        <?= $this->render('_order_amount')?>
+        <?= $this->render('_order_amount') ?>
     </div>
     <div class="col-md-4">
-        <?= $this->render('_order_revenue')?>
+        <?= $this->render('_order_revenue') ?>
     </div>
 </div>
 

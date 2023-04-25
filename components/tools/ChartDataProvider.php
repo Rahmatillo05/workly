@@ -57,7 +57,7 @@ class ChartDataProvider extends Widget
     public static function dailyStatistics(): array
     {
         $data = [];
-        $today = strtotime("today");
+        $today = \Yii::$app->user->identity->created_at;
         $profit = PurchaseHistory::find()->select("SUM(purchase_price * amount)")->where(['between', 'created_at', $today, time()])->scalar();
         $sales = Order::find()->where(['between', 'created_at', $today, time()])->sum('discount_price');
         $order_net_price = Order::find()->where(['between', 'created_at', $today, time()])->sum('sell_price');
@@ -84,7 +84,17 @@ class ChartDataProvider extends Widget
     public static function productAllAmount(): array
     {
         $data = [];
-        $products = Product::find()->all();
+        $products = Product::find();
+        $request = \Yii::$app->request;
+        if ($sorting_date = $request->get('OrderSorting')) {
+            $products->where([
+                'between',
+                'created_at',
+                strtotime($sorting_date['start_time']),
+                strtotime($sorting_date['end_time'])
+            ]);
+        }
+        $products = $products->all();
         $product_amount = [];
         $product_name = [];
         /** @var Product $product */
@@ -111,11 +121,21 @@ class ChartDataProvider extends Widget
         return $data;
     }
 
-    public static function statisticsData()
+    public static function statisticsData(): array
     {
         $data = [];
 
-        $statistics = Statistics::find()->all();
+        $statistics = Statistics::find();
+        $request = \Yii::$app->request;
+        if ($sorting_date = $request->get('OrderSorting')) {
+            $statistics->where([
+                'between',
+                'created_at',
+                strtotime($sorting_date['start_time']),
+                strtotime($sorting_date['end_time'])
+            ]);
+        }
+        $statistics = $statistics->all();
         $net_profit = [];
         $sales = [];
         $amount = [];

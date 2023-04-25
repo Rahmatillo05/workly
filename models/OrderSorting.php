@@ -13,7 +13,6 @@ class OrderSorting extends Model
     public function rules()
     {
         return [
-            [['start_time'], 'required'],
             [['end_time'], 'default', 'value' => date('d-m-Y')],
             [['end_time'], 'default', 'value' => date('d-m-Y')]
         ];
